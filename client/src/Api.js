@@ -1,0 +1,102 @@
+
+import axios from "axios";
+
+export default class Api {
+
+    constructor() {
+        this.config = {
+            baseURL: this.getRESTApiUri(),
+            timeout: 5000,
+            headers: {
+                'Accept' : 'application/json',
+                'Content-Type': 'application/json'
+            }
+          };
+    }
+
+    // API REST
+    getRESTApiUri()
+    {
+        let uri = this.getRootUrl() + "/api/v1";
+        //console.log("REST API: " + uri);
+        return uri;
+    }
+
+    getRootUrl()
+    {
+        let uri = window.location.protocol + "//" + window.location.hostname;
+        return uri;
+    }
+
+    loadToken() {
+        let token = localStorage.getItem('mdp-token');
+        this.config.headers = {"Authorization" : "Bearer "  + token };
+    }
+
+    setToken(token) {
+        localStorage.setItem('mdp-token', token);
+        this.loadToken();
+    }
+
+    destroyToken() {
+        localStorage.setItem('mdp-token', '');
+        this.loadToken();
+    }
+
+    /**************************************************************** 
+     * API AUTHENTIFICATION 
+     ****************************************************************/
+    signup(user) {
+        return axios.post('/auth/signup', user, this.config).then(this.handleResponse);
+    }
+
+    signIn(user) {
+        return axios.post('/auth/signin', user, this.config).then(this.handleResponse);
+    }
+
+    setNewPassword(info) {
+        return axios.post('/auth/newpassword', info, this.config).then(this.handleResponse);
+    }
+
+    requestResetPassword(info) {
+        return axios.post('/auth/resetpassword', info, this.config).then(this.handleResponse);
+    }
+
+    /**************************************************************** 
+     * API DU PROFIL UTILISATEUR
+     ****************************************************************/
+
+    setMyProfile(user) {
+        return axios.post('/dashboard/user/profile', user, this.config).then(this.handleResponse);
+    }
+
+    getMyProfile() {
+        return axios.get('/dashboard/user/profile', this.config).then(this.handleResponse);
+    }
+
+    /**************************************************************** 
+     * GESTION DES UTILISATEURS PAR LES ADMINS 
+     ****************************************************************/
+    setUserProfile(user) {
+        return axios.post('/dashboard/users/profile', user, this.config).then(this.handleResponse);
+    }
+
+    getUsers() {
+        return axios.get('/dashboard/users/users', this.config).then(this.handleResponse);
+    }
+
+    deleteUser(user) {
+        return axios.post('/dashboard/users/delete', user, this.config).then(this.handleResponse);
+    }
+
+    /**************************************************************** 
+     * FONCTION UTILITAIRE 
+     ****************************************************************/
+    handleResponse(response) {
+        if (response.status === 200) {
+            return Promise.resolve(response.data)
+        } else {            
+            return Promise.reject(response.statusText);
+        }
+    }
+}
