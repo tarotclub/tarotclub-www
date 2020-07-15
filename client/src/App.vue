@@ -8,7 +8,7 @@
           {{ alertText }}
     </v-snackbar>
 
-    <TopToolbar></TopToolbar>
+    <TopToolBar></TopToolBar>
     <v-content>
       <v-container fluid>
         <template v-if="!isInitialized">
@@ -26,7 +26,7 @@
     <v-footer style="padding-top:16px;" class="font-weight-medium" >
 
         <v-card color="transparent" elevation="0" class="mx-auto" style="text-align:center; margin-bottom:10px; padding-top : 30px;">
-          <span>Monnaie de Paris &copy; 2020 - Tous droits réservés</span>
+          <span>TarotClub &copy; 2020-2099 - Tous droits réservés</span>
         </v-card>
               
     </v-footer>
@@ -36,12 +36,12 @@
 
 <script>
 
-import TopToolbar  from "./components/TopToolBar";
+import TopToolBar  from "./components/TopToolBar";
 
 export default {
   name: 'App',
   components: {
-    TopToolbar
+    TopToolBar
   },
   data () {
       return {

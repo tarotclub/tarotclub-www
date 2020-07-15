@@ -3,8 +3,8 @@
     
 <v-navigation-drawer
   v-model="drawer"
-   absolute
-   temporary
+   clipped
+   app
   >
     <v-list-item class="px-2">
       <v-list-item-avatar>
@@ -13,7 +13,7 @@
       </v-list-item-avatar>
 
  
-        <v-list-item-title v-if="isLogged">{{fullName}}</v-list-item-title>
+        <v-list-item-title>{{fullName}}</v-list-item-title>
         <v-btn
           icon
           @click.stop="drawer = !drawer"
@@ -82,7 +82,7 @@
 
 <v-app-bar fixed app>
 
-    <v-app-bar-nav-icon v-if="isLogged" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
     <router-link to="/">
       <img class="mr-3" :src="require('../assets/logo.png')" height="40"/>
@@ -114,7 +114,7 @@ export default {
     //====================================================================================================================
     data() {
         return {
-            title: "Gestionnaire de machines",
+            title: "TarotClub",
             showSessionDialog: false,
             drawer: null,
             items: [

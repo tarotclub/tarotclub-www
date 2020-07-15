@@ -9,6 +9,7 @@ import Users from './components/Users';
 
 //============================  VIEWS ============================
 import Home from './views/Home';
+import Dashboard from './views/Dashboard';
 import ResetPassword from './views/ResetPassword';
 import Signin from './views/Signin';
 import Signup from './views/Signup';
@@ -22,13 +23,13 @@ const router = new VueRouter({
     routes: [
       {
         path: '/',
-        name: 'Signin',
-        component: Signin
+        name: 'root',
+        component: Home
       },
       {
-        path: '/dashboard/home',
-        name: 'Home',
-        component: Home, 
+        path: '/dashboard/Dashboard',
+        name: 'Dashboard',
+        component: Dashboard, 
       },
       {
         path: '/dashboard/profile',
