@@ -8,7 +8,6 @@ import router from './router.js'
 import store from './store/AppStore'
 import Api from './Api.js'
 
-
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(Vuetify);
@@ -34,20 +33,20 @@ new Vue({
   render: h => h(App),
   beforeCreate: function() {
     this.$api.loadToken();
-    this.$api.getMyProfile().then((response) => {
+    // this.$api.getMyProfile().then((response) => {
 
-        if (response.success) {
-          this.$store.commit('user/LOGIN_SUCCESS', response.data.profile);
+    //     if (response.success) {
+    //       this.$store.commit('user/LOGIN_SUCCESS', response.data.profile);
            
 
-        } else {
-          console.log("Not logged in.");
-          this.$store.commit('user/LOGIN_FAILURE');
-          this.$store.commit('SET_INITIALIZED', true);
-        }
-    }).catch((error) => {
-      console.log(error);
-    })
+    //     } else {
+    //       console.log("Not logged in.");
+    //       this.$store.commit('user/LOGIN_FAILURE');
+    //       this.$store.commit('SET_INITIALIZED', true);
+    //     }
+    // }).catch((error) => {
+    //   console.log(error);
+    // })
   }
 }).$mount('#app')
 

@@ -8,40 +8,43 @@
           {{ alertText }}
     </v-snackbar>
 
+    <LeftMenu></LeftMenu>
     <TopToolBar></TopToolBar>
+
+
     <v-content>
-      <v-container fluid>
-        <template v-if="!isInitialized">
-            <div class="text-center">
-              <v-progress-circular indeterminate color="primary" :size="50"></v-progress-circular>
-           </div>
-        </template>
-        <template v-else>
+      <v-container fluid style="height:100vh;">
+        
+        
             <router-view></router-view>
-        </template>
+        
         </v-container>
+
+        <!-- FOOTER -->
+        <v-footer>
+            <v-card color="transparent" elevation="0" class="mx-auto" style="text-align:right; margin-bottom:10px; padding-top : 30px;">
+              <span>TarotClub &copy; 2020-2099 - Tous droits réservés</span>
+            </v-card>
+                  
+        </v-footer>
+
     </v-content>
    
-    <!-- FOOTER -->
-    <v-footer style="padding-top:16px;" class="font-weight-medium" >
-
-        <v-card color="transparent" elevation="0" class="mx-auto" style="text-align:center; margin-bottom:10px; padding-top : 30px;">
-          <span>TarotClub &copy; 2020-2099 - Tous droits réservés</span>
-        </v-card>
-              
-    </v-footer>
+    
 
   </v-app>
 </template>
 
 <script>
 
+import LeftMenu  from "./components/LeftMenu";
 import TopToolBar  from "./components/TopToolBar";
 
 export default {
   name: 'App',
   components: {
-    TopToolBar
+    TopToolBar,
+    LeftMenu
   },
   data () {
       return {
