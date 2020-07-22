@@ -1,6 +1,16 @@
 <template>
+<div>
 
-<!-- <div class="responsive-container"> -->
+<Servers></Servers>
+
+</div>
+
+</template>
+
+<script>
+
+/*
+
     <svg class="responsive-container"
         viewBox="0 0 330 600"
          id="svgmain">
@@ -22,11 +32,13 @@
 
     </svg>
 <!-- </div> -->
-   
-</template>
 
-<script>
 
+
+*/
+
+
+import Servers from "../components/Servers.vue";
 import Table from "../components/Table.vue";
 import * as d3 from 'd3';
 
@@ -40,7 +52,7 @@ export default {
            }
        ]
     }),
-    components: { Table },
+    components: { Table, Servers },
     methods: {
 //====================================================================================================================
         createDef: function(xml, id_name)
