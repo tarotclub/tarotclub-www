@@ -7,6 +7,7 @@ import App from './App.vue'
 import router from './router.js'
 import store from './store/AppStore'
 import Api from './Api.js'
+import TarotClient from './tarot-client.js'
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
@@ -24,6 +25,7 @@ const opts = ({
 Vue.config.productionTip = false;
 
 Vue.prototype.$api = new Api();
+Vue.prototype.$tc = new TarotClient();
 Vue.prototype.$eventHub = new Vue(); // Global event bus
 
 new Vue({
