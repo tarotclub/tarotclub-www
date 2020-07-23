@@ -36,7 +36,7 @@
         servers: [
           {
             name: 'Frozen Yogurt',
-            nb_players: 159,
+            nb_players: '24/100',
             nb_tables: 100,
             region: 'EU',
             server_type: 'Official',
@@ -44,7 +44,7 @@
           },
           {
             name: 'Frozen Yogurt',
-            nb_players: 86,
+            nb_players: '8/50',
             nb_tables: 10,
             region: 'US',
             server_type: 'Community',
