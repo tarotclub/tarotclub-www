@@ -8,30 +8,22 @@
           {{ alertText }}
     </v-snackbar>
 
-    <LeftMenu></LeftMenu>
+    <!-- <LeftMenu></LeftMenu> -->
     <TopToolBar></TopToolBar>
 
 
     <v-content>
-      <v-container fluid style="height:100vh;">
-        
-        
-            <router-view></router-view>
-        
-        </v-container>
+      <v-container fluid >
+          <router-view></router-view>
+      </v-container>
 
-        <!-- FOOTER -->
-        <v-footer>
-            <v-card color="transparent" elevation="0" class="mx-auto" style="text-align:right; margin-bottom:10px; padding-top : 30px;">
-              <span>TarotClub &copy; 2020-2099 - Tous droits réservés</span>
-            </v-card>
-                  
-        </v-footer>
+       <v-footer absolute>
+          <v-card color="transparent" elevation="0" class="mx-auto" style="text-align:right; margin-bottom:10px; padding-top : 30px;">
+            <span>TarotClub &copy; 2020-2099 - Tous droits réservés</span>
+          </v-card>          
+      </v-footer>
 
     </v-content>
-   
-    
-
   </v-app>
 </template>
 

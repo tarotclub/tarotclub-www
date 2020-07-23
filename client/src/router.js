@@ -11,8 +11,8 @@ import VueRouter from 'vue-router';
 import Home from './views/Home';
 // import Dashboard from './views/Dashboard';
 // import ResetPassword from './views/ResetPassword';
-// import Signin from './views/Signin';
-// import Signup from './views/Signup';
+import Signin from './views/Signin';
+import Signup from './views/Signup';
 // import NewPassword from './views/NewPassword';
 
 
@@ -25,6 +25,16 @@ const router = new VueRouter({
         path: '/',
         name: 'home',
         component: Home
+      },
+      {
+        path: '/signin',
+        name: 'signin',
+        component: Signin
+      },
+      {
+        path: '/signup',
+        name: 'signup',
+        component: Signup
       },
       { 
         path: "*", redirect: '/'
