@@ -91,13 +91,20 @@ export default class Api {
         return axios.post('/dashboard/users/delete', user, this.config).then(this.handleResponse);
     }
 
+     /**************************************************************** 
+     * GESTION DES SERVEURS DE JEU
+     ****************************************************************/
+     getAllServers() {
+        return axios.get('/servers/list', this.config).then(this.handleResponse);
+     }
+
     /**************************************************************** 
      * FONCTION UTILITAIRE 
      ****************************************************************/
     handleResponse(response) {
         if (response.status === 200) {
             return Promise.resolve(response.data)
-        } else {            
+        } else {
             return Promise.reject(response.statusText);
         }
     }

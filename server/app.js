@@ -71,12 +71,14 @@ app.all('*', function (req, res, next) {
 });
 
 
-const ApiRoot         = '/api/v1';
-let dashboard_root    = require('./routes/dashboard/dashboard.js');
-let auth_root         = require('./routes/auth/auth.js');
+const ApiRoot           = '/api/v1';
+const dashboard_root    = require('./routes/dashboard/dashboard.js');
+const auth_root         = require('./routes/auth/auth.js');
+const servers_root      = require('./routes/servers/servers.js');
 
 app.use(ApiRoot + '/dashboard', dashboard_root);
 app.use(ApiRoot + '/auth', auth_root);
+app.use(ApiRoot + '/servers', servers_root);
 
 // ============================================================================
 // 404 CUSTOM ERROR PAGE
