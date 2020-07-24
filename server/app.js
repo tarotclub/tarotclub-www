@@ -17,6 +17,7 @@ if (port === undefined) {
   console.log('Missing environment variables, cannot run app. Exiting...');
   process.exit(-1);
 }
+ 
 
 // ============================================================================
 // UPGRADE DATABASE VERY EARLY
@@ -91,5 +92,5 @@ app.use(function(req, res) {
 // START APPLICATION
 // ============================================================================
 app.listen(port, function () {
-  console.log('MDP server is started on port: ' + port);
+  console.log('TarotClub server is started on port: ' + port);
 });

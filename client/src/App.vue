@@ -11,7 +11,6 @@
     <!-- <LeftMenu></LeftMenu> -->
     <TopToolBar></TopToolBar>
 
-
     <v-content>
       <v-container fluid >
           <router-view></router-view>
@@ -29,14 +28,13 @@
 
 <script>
 
-import LeftMenu  from "./components/LeftMenu";
+// import LeftMenu  from "./components/LeftMenu";
 import TopToolBar  from "./components/TopToolBar";
 
 export default {
   name: 'App',
   components: {
-    TopToolBar,
-    LeftMenu
+    TopToolBar
   },
   data () {
       return {
@@ -73,3 +71,11 @@ export default {
   }
 };
 </script>
+
+<style>
+.v-application {
+    background-color: var(--v-background-base) !important;
+}
+
+</style>
+

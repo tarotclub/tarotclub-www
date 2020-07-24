@@ -34,7 +34,7 @@
 
                     <p style="display:inline;">Mot de passe oublié ? </p><router-link to="/resetpass"><p style="display:inline;">Réinitialisation.</p></router-link>
                     <br />
-                    <p style="display:inline;">Pas de compte ? </p><router-link to="/sign-up"><p style="display:inline;">Créer un compte.</p></router-link>
+                    <p style="display:inline;">Pas de compte ? </p><router-link :to="{ name: 'signup'}"><p style="display:inline;">Créer un compte.</p></router-link>
                 </v-card>
             </v-card>
         </v-col>
@@ -75,18 +75,13 @@ export default {
             this.$api.signIn( {username: this.username, password: this.password }).then( result => {
                 if (result.success) {
                     this.$api.setToken(result.data.token);
-                    this.$api.getMachines().then((response) => {
-
-                        if (response.success) {
-                            this.$store.commit('machines/SET_MACHINES', response.data.machines);
-                            this.$store.commit('user/LOGIN_SUCCESS', result.data.profile);
-                            this.$router.push({ name: 'Home' });
-                        }
-                    });
+                    this.$store.commit('user/LOGIN_SUCCESS', result.data.profile);
+                    this.$router.push({ name: 'Home' });
+     
                 } else {
 
-                    if (result.reason === 'notvalidated') {
-                        this.$eventHub.$emit('setAlert', "Compte en attente de validation", 'error', 3000);
+                    if (result.reason === 'deleted') {
+                        this.$eventHub.$emit('setAlert', "Compte supprimé", 'error', 3000);
                     } else {
                         this.$eventHub.$emit('setAlert', "Erreur de login ou de mot de passe", 'error', 3000);
                     }

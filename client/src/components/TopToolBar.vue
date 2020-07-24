@@ -1,26 +1,16 @@
 <template>
   <v-app-bar fixed app>
+    <v-app-bar-nav-icon></v-app-bar-nav-icon>
     <router-link to="/">
       <img class="mr-3" :src="require('../assets/logo.png')" height="40" />
     </router-link>
 
-    <v-toolbar-title style="margin-right:20px;">{{ title }}</v-toolbar-title>
-
-    <v-menu offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn text v-bind="attrs" v-on="on">Jouer au Tarot</v-btn>
-      </template>
-      <v-list>
-        <v-list-item v-for="(item, index) in menuPlayTarot" :key="index" @click>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
+    <v-toolbar-title class="hidden-xs-and-down" style="margin-right:20px;">{{ title }}</v-toolbar-title>
 
     <v-spacer></v-spacer>
 
     <!-- MENU -->
-
+ 
     <v-btn v-if="isLogged" to="/dashboard/home" icon>
       <v-icon>mdi-account-circle</v-icon>
     </v-btn>
@@ -29,13 +19,7 @@
     </v-btn>
 
     <v-btn v-if="!isLogged" color="primary" :to="{name: 'signin'}">Connexion</v-btn>
-
-    <v-btn
-      v-if="!isLogged"
-      color="success"
-      :to="{name: 'signup'}"
-      style="margin-left:10px;"
-    >S'inscrire</v-btn>
+    <v-btn v-if="!isLogged" color="success" :to="{name: 'signup'}" style="margin-left:10px;">S'inscrire</v-btn>
   </v-app-bar>
 </template>
     
@@ -48,12 +32,6 @@ export default {
       title: "TarotClub",
       showSessionDialog: false,
       drawer: null,
-      menuPlayTarot: [
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me 2" },
-      ],
     };
   },
   computed: {

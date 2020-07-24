@@ -15,22 +15,26 @@ console.log("Database connection string: " + connectionString);
 
 const db = pgp(connectionString);
 
-async function createUser(username, hashed_password, level) {
-    return  db.one('INSERT INTO users (username, password, level, login_attempts) VALUES(?, ?, ?, 0)', 
-                [username, hashed_password, level]);
+async function createUser(username, email, hashed_password) {
+    return  db.one('INSERT INTO users (username, email, password, login_attempts) VALUES($1, $2, $3, 0)', 
+                [username, email, hashed_password]);
 }
 
 async function getUserByUsername(username) {
-    return  db.any('SELECT * FROM users WHERE username=?', [username]);
+    return  db.any('SELECT * FROM users WHERE username=$1', [username]);
+}
+
+async function getUserByUsernameOrEmail(username, email) {
+    return  db.any('SELECT * FROM users WHERE username=$1 OR email=$2', [username, email]);
 }
 
 async function updateProfile(firstname, lastname, company, email, tel, level, username) {
-    return db.one('UPDATE users SET firstname=?, lastname=?, company=?, email=?, tel=?, level=? WHERE username=?',
+    return db.one('UPDATE users SET firstname=$1, lastname=$2, company=$3, email=$4, tel=$5, level=$6 WHERE username=?',
                 [firstname, lastname, company, email, tel, level, username]);
 }
 
 async function updateMyProfile(firstname, lastname, company, email, tel, username) {
-    return db.one('UPDATE users SET firstname=?, lastname=?, company=?, email=?, tel=? WHERE username=?',
+    return db.one('UPDATE users SET firstname=$1, lastname=$2, company=$3, email=$4, tel=$5 WHERE username=$6',
     [firstname, lastname, company, email, tel, username]);
 }
 
@@ -39,19 +43,19 @@ async function getUsers() {
 }
 
 async function deleteUser(username) {
-    return db.one('UPDATE users SET state=0 WHERE username = ?', [username]);
+    return db.one('UPDATE users SET state=0 WHERE username = $1', [username]);
 }
 
 async function setResetToken (id, token) {
-    return db.one('UPDATE users SET reset_token=?, reset_password_datetime=DATE_ADD(NOW(), INTERVAL 15 MINUTE) WHERE id = ?', [token, id]);
+    return db.one('UPDATE users SET reset_token=$1, reset_password_datetime=DATE_ADD(NOW(), INTERVAL 15 MINUTE) WHERE id = $2', [token, id]);
 }
 
 async function getUserByResetToken(token) {
-    return  db.any('SELECT * FROM users WHERE reset_token=?', [token]);
+    return  db.any('SELECT * FROM users WHERE reset_token=$1', [token]);
 }
 
 async function setNewPassword(id, hashed_password) {
-    return db.one('UPDATE users SET password=?, reset_token=? WHERE id=?',
+    return db.one('UPDATE users SET password=$1, reset_token=$2 WHERE id=$3',
                 [hashed_password, '', id]);
 }
 
@@ -81,6 +85,7 @@ async function upgradeDB() {
 module.exports = {
     createUser,
     getUserByUsername,
+    getUserByUsernameOrEmail,
     updateProfile,
     getUsers,
     deleteUser,

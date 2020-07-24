@@ -12,13 +12,14 @@
                 <!-- SIGN UP FORM -->
 
                 <v-card elevation="0" class="mx-auto" width="300px">
-                    <form ref="signupForm" style="padding-bottom:30px;" @submit="checkForm">
+                    <v-form ref="signupForm" style="padding-bottom:30px;" @submit="checkForm" v-model="valid">
       
                         <v-text-field
                             name="username"
                             value=""
                             type="text" 
                             label="User name"
+                            :rules="nameRules"
                             v-model="username"
                             required
                         ></v-text-field>
@@ -28,7 +29,6 @@
                             type="password" 
                             label="Password"
                             v-model="password"
-                            style="padding-bottom:20px;"
                             required
                         ></v-text-field>
 
@@ -36,16 +36,26 @@
                             name="email"
                             type="email" 
                             label="email"
+                            :rules="emailRules"
                             v-model="email"
+                            required
+                            style="padding-bottom:20px;"
+                        ></v-text-field>
+
+                        <v-text-field
+                            name="potmiel"
+                            type="text" 
+                            label="potmiel"
+                            v-model="potmiel"
                             autocomplete="off"
                             style="display:none !important; visibility:hidden !important;"
                         ></v-text-field>
 
-                        <v-btn type="submit" class="mr-4">Valider</v-btn>
+                        <v-btn type="submit" class="mr-4" :disabled="!valid">Valider</v-btn>
                         <v-btn @click="reset">Effacer</v-btn>
-                    </form>
+                    </v-form>
                     
-                    <router-link to="/"><p style="display:inline;">Revenir à l'identification.</p></router-link>
+                    <router-link :to="{name: 'signin'}"><p style="display:inline;">Revenir à l'identification.</p></router-link>
                     
                 </v-card>
             </v-card>
@@ -58,9 +68,19 @@
 export default {
     
     data: () => ({
+        valid: false,
         password: '',
         username: '',
-        email: ''
+        email: '',
+        potmiel: '',
+        nameRules: [
+            v => !!v || 'Name is required',
+            v => v.length <= 20 || 'Name must be less than 20 characters',
+        ],
+        emailRules: [
+            v => !!v || 'E-mail is required',
+            v => /.+@.+/.test(v) || 'E-mail must be valid',
+        ],
     }),
     created() {
         if (this.$store.state.user.loggedIn) {
@@ -74,7 +94,6 @@ export default {
         } else {
             next();
         }
-     
     },
     methods: {
 
@@ -84,12 +103,10 @@ export default {
         },
 
         reset() {
-            this.password = '';
-            this.username = '';
             this.$refs.signupForm.reset();
         },
         checkForm (e) {
-            this.$api.signup( {password: this.password, username: this.username, email: this.email }).then( result => {
+            this.$api.signup( {password: this.password, username: this.username, email: this.email, potmiel: this.potmiel }).then( result => {
                 if (result.success) {
                     this.$eventHub.$emit('setAlert', 'Compte créé, en attente de validation', 'success', 3000);
                 } else {

@@ -28,26 +28,19 @@ router.post('/signup', (req, res) => {
 
     console.log("[AUTH] Signup called");
 
-    queries.getUserByUsername(req.body.username).then( function (data) {
+    queries.getUserByUsernameOrEmail(req.body.username, req.body.email).then( function (data) {
 
-      // Le champs email est un pot de miel anti-bots, il doit être vide ; on en n'a pas besoin ici :D
-      if ((data.length == 0) && (req.body.email == '')) {
-    
-          
+      // Le champs potmiel est un pot de miel anti-bots, il doit être vide ; on en n'a pas besoin ici :D
+      if ((data.length == 0) && (req.body.potmiel == '')) {
 
-          let level = 0; // no any access rights
-          if (AccessUtil.isGod(req.body.username)) {
-              level = 100;
-          }
-
-          queries.createUser(req.body.username, saltPassword(req.body.password), level)
+          queries.createUser(req.body.username, req.body.email, saltPassword(req.body.password))
           .then(function (data) {
 
              // Create JWT
             const user = {
                 id: data.insertId,
                 username: req.body.username,
-                level: level
+                status: 0
             };
             
             jwt.sign ({user: user}, process.env.JWT_SECRET, (err, token) => {
@@ -87,7 +80,7 @@ router.post('/signin', (req, res) => {
   queries.getUserByUsername(req.body.username).then( function (data) {
 
     if (data.length > 0) {
-      if (data[0].level > 0) {
+      if (AccessUtil.isActive(data[0].status)) {
           let passSalt = data[0].password.substr(0,16); // extract salt
           let key4 = crypto.scryptSync(req.body.password, passSalt, 20);
           let key5 = key4.toString('hex');
@@ -97,7 +90,7 @@ router.post('/signin', (req, res) => {
             const user = {
               id: data[0].id,
               username: req.body.username,
-              level: data[0].level,
+              status: data[0].status,
             };
 
             jwt.sign ({user: user}, process.env.JWT_SECRET, (err, token) => {
@@ -111,7 +104,7 @@ router.post('/signin', (req, res) => {
                         lastname: data[0].lastname,
                         tel: data[0].tel,
                         company: data[0].company,
-                        level: data[0].level,
+                        status: data[0].status,
                         created: data[0].created,
                         email: data[0].email
                       }
@@ -131,7 +124,7 @@ router.post('/signin', (req, res) => {
         console.log("[AUTH] Signin failure");
         res.status(200).json({
             success: false,
-            reason: 'notvalidated',
+            reason: 'deleted',
             message: 'Bad username or password'
         });
       }
@@ -167,7 +160,7 @@ router.post('/resetpassword', (req, res) => {
     queries.getUserByUsername(req.body.username).then( function (data) {
 
       if (data.length > 0) {
-        if (data[0].level > 0) {
+        if (AccessUtil.isActive(data[0].status)) {
         // create reset token for that user
         let reset_token = crypto.randomBytes(20).toString('hex');
 
@@ -246,7 +239,7 @@ router.post('/newpassword', (req, res) => {
 
           let timeout = new Date(data[0].reset_password_datetime);
           let now = new Date();
-          if ((data[0].level > 0) && (timeout > now)) {
+          if (AccessUtil.isActive(data[0].status) && (timeout > now)) {
 
             queries.setNewPassword(data[0].id, saltPassword(req.body.password)).then(function () {
                 

@@ -11,7 +11,9 @@ export default class Api {
                 'Accept' : 'application/json',
                 'Content-Type': 'application/json'
             }
-          };
+        };
+        this.tokenName = 'tarotclub-token';
+
     }
 
     // API REST
@@ -29,17 +31,17 @@ export default class Api {
     }
 
     loadToken() {
-        let token = localStorage.getItem('mdp-token');
+        let token = localStorage.getItem(this.tokenName);
         this.config.headers = {"Authorization" : "Bearer "  + token };
     }
 
     setToken(token) {
-        localStorage.setItem('mdp-token', token);
+        localStorage.setItem(this.tokenName, token);
         this.loadToken();
     }
 
     destroyToken() {
-        localStorage.setItem('mdp-token', '');
+        localStorage.setItem(this.tokenName, '');
         this.loadToken();
     }
 

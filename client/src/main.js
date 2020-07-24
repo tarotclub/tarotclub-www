@@ -17,8 +17,25 @@ const opts = ({
   icons: {
     iconfont: 'mdi',
   },
+  
   theme: {
-    dark: true,
+    options: {
+      customProperties: true
+    },
+    themes: {
+      light:
+        {
+          background: '#e3e2df', 
+          primary: '#9c27b0',
+          secondary:' #009688',
+          accent: '#2196f3',
+          error: '#f44336',
+          warning: '#ff5722',
+          info: '#3f51b5',
+          success: '#4caf50'
+      }
+    },
+    dark: false,
   }
 });
 
