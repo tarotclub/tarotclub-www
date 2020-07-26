@@ -31,7 +31,6 @@ let app = express();
 
 app.use(cors());
 app.use(express.static(path.resolve(__dirname, '../client/dist')));
-app.use(express.static(path.resolve(__dirname, '../files')));
 app.use(bodyParser.json());
 
 app.use(helmet()); // adding Helmet to enhance your API's security

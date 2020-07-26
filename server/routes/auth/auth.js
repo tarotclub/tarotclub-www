@@ -5,19 +5,11 @@ const jwt = require('jsonwebtoken');
 const queries = require('../../sql/queries.js');
 const mailer = require('../../mailer/mailer.js');
 const AccessUtil = require("../accessutil.js");
-
-// let passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
-
-function genRandomString(length)
-{
-  return crypto.randomBytes(Math.ceil(length/2))
-          .toString('hex') // convert to hexadecimal format 
-          .slice(0,length);   // return required number of characters
-}
+const JwtUtil = require("../jwtutil.js");
 
 function saltPassword(password)
 {
-  let salt = genRandomString(16);
+  let salt = JwtUtil.genRandomString(16);
   const key1 = crypto.scryptSync(password, salt, 20);
   const key2 = key1.toString('hex');
 

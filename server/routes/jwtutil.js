@@ -1,4 +1,5 @@
 let jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const queries = require('../sql/queries.js');
 
 let checkToken = (req, res, next, minLevel) => {
@@ -78,9 +79,17 @@ let checkIotAccess = (req, res, next) => {
   }
 }
 
+function genRandomString(length)
+{
+  return crypto.randomBytes(Math.ceil(length/2))
+          .toString('hex') // convert to hexadecimal format 
+          .slice(0,length);   // return required number of characters
+}
+
 module.exports = {
   checkTokenForAdmin,
   checkTokenForAdminOrMaintenance,
   checkTokenAllUsers,
-  checkIotAccess
+  checkIotAccess,
+  genRandomString
 }

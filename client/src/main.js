@@ -27,7 +27,7 @@ const opts = ({
         {
           background: '#e3e2df', 
           primary: '#9c27b0',
-          secondary:' #009688',
+          secondary:'#009688',
           accent: '#2196f3',
           error: '#f44336',
           warning: '#ff5722',
