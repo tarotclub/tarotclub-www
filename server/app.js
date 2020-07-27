@@ -29,6 +29,7 @@ db.upgradeDB();
 // ============================================================================
 let app = express();
 
+app.options('*', cors());
 app.use(cors());
 app.use(express.static(path.resolve(__dirname, '../client/dist')));
 app.use(bodyParser.json());

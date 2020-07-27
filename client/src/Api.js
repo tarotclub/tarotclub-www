@@ -5,30 +5,30 @@ export default class Api {
 
     constructor() {
         this.config = {
-            baseURL: this.getRESTApiUri(),
+            baseURL: 'api/v1', //this.getRESTApiUri(),
             timeout: 5000,
             headers: {
                 'Accept' : 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'plain/text'
             }
         };
         this.tokenName = 'tarotclub-token';
 
-    }
+    }  
 
-    // API REST
-    getRESTApiUri()
-    {
-        let uri = this.getRootUrl() + "/api/v1";
-        //console.log("REST API: " + uri);
-        return uri;
-    }
+    // // API REST 
+    // getRESTApiUri()
+    // {
+    //     let uri = this.getRootUrl() + "/api/v1";
+    //     //console.log("REST API: " + uri);
+    //     return uri;
+    // }
 
-    getRootUrl()
-    {
-        let uri = window.location.protocol + "//" + window.location.hostname;
-        return uri;
-    }
+    // getRootUrl()
+    // {
+    //     let uri = window.location.protocol + "//" + window.location.hostname;
+    //     return uri;
+    // }
 
     loadToken() {
         let token = localStorage.getItem(this.tokenName);

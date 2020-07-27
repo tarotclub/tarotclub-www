@@ -14,8 +14,10 @@ export default class TarotClient {
             nickname: 'PlayerUnkown',
             avatar: '',
             gender: 'Human'
-          };
+          };   
+    }
 
+    connectToServer() {
         this.ws = new ReconnectingWebSocket(this.getWebSocketHost());
 
         this.ws.onopen = this.handleWebSocketOpen;
@@ -51,13 +53,6 @@ export default class TarotClient {
         let wsHost = (((window.location.protocol === "https:") ? "wss://" : "ws://") + window.location.hostname + ":4270");
         console.log("Web socket host: " + wsHost);
         return wsHost;
-    }
-
-    getRESTApiUri()
-    {
-        let uri = this.getRootUrl() + "/api/v1";
-        //console.log("REST API: " + uri);
-        return uri;
     }
 
     replyLogin()

@@ -13,6 +13,7 @@
       ></v-text-field>
     </v-card-title>
     <v-data-table
+            loading
       :headers="headers"
       :items="servers"
       :search="search"
@@ -34,22 +35,6 @@
           { text: 'Privacy', value: 'privacy' }
         ],
         servers: [
-          {
-            name: 'Frozen Yogurt',
-            nb_players: '24/100',
-            nb_tables: 100,
-            region: 'EU',
-            server_type: 'Official',
-            privacy: 'Public',
-          },
-          {
-            name: 'Frozen Yogurt',
-            nb_players: '8/50',
-            nb_tables: 10,
-            region: 'US',
-            server_type: 'Community',
-            privacy: 'Private',
-          },
         ],
       }
     },

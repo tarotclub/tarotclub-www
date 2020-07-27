@@ -5,38 +5,40 @@ const JwtUtil = require("../jwtutil.js");
 let list = new Map();
 let sskList = new Map();
 
-function addServer(token, server, ssk) {
-    list[token] = server;
-    sskList[token] = ssk;
-}
-
-function serversToJson() {
-    return [...list];
-}
 
 router.post('/register', (req, res) => {
 
-    let allowedToAddServer = false;
+    let token = req.body.token;
+    let server = req.body.server;
+    let allowedServer = false;
+
     if (req.body.token == process.env.TCDS_OFFICIAL_TOKEN1) {
-        
-        allowedToAddServer = true;
+        allowedServer = true;
     } else {
         // Serveur non officiel
         // TODO: il doit avoir été créé avant par un utilisateur valide
     }
 
-    if (allowedToAddServer)
+    if (allowedServer)
     {
-        let ssk = JwtUtil.genRandomString(16);
-        addServer(req.body.token, req.body.server); // server object contains only public information
-        console.log("[Servers] Added new server");
-        res.status(200).json({
-            success: true,
-            data: {
-                ssk: ssk
-            },
-            message: 'Servers list'
-        });
+        if (req.body.command == 'register') {
+            let ssk = JwtUtil.genRandomString(16);           
+            // server object contains only public information, keep token and ssk private!
+            list[token] = server;
+            sskList[token] = ssk;
+
+            console.log("[Servers] Added new server");
+            res.status(200).json({
+                success: true,
+                data: {
+                    ssk: ssk
+                },
+                message: 'Servers list'
+            });
+        } else {
+            // Update status
+            list[token] = server;
+        }
     }
     else {
         res.status(200).json({
@@ -53,7 +55,7 @@ router.get('/list', (req, res) => {
 
     res.status(200).json({
         success: true,
-        data: serversToJson(),
+        data: [...list],
         message: 'Servers list'
     });
     
