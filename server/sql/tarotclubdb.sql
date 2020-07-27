@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS servers
 (
     id bigserial PRIMARY KEY NOT NULL,
     user_id bigserial NOT NULL, -- compte associé à ce serveur
-    token TEXT NOT NULL,
+    token TEXT NOT NULL
 );
 
 
