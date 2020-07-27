@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS tarotclubdb;
-CREATE DATABASE tarotclubdb;
+-- DROP DATABASE IF EXISTS tarotclubdb;
+-- CREATE DATABASE tarotclubdb;
 
 \c tarotclubdb;
 

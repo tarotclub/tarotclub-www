@@ -1,4 +1,4 @@
 #!/bin/bash
 
-psql -U anthony -f ./tarotclubdb.sql
+psql -U tarotclub -f ./tarotclubdb.sql
 
