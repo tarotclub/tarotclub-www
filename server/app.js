@@ -78,7 +78,7 @@ const servers_root      = require('./routes/servers/servers.js');
 
 app.use(ApiRoot + '/dashboard', dashboard_root);
 app.use(ApiRoot + '/auth', auth_root);
-app.use(ApiRoot + '/servers', servers_root);
+app.use(ApiRoot + '/server', servers_root);
 
 // ============================================================================
 // 404 CUSTOM ERROR PAGE

@@ -13,7 +13,7 @@
       ></v-text-field>
     </v-card-title>
     <v-data-table
-            loading
+      :loading="servers.length == 0"
       :headers="headers"
       :items="servers"
       :search="search"
