@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const schedule = require('node-schedule');
 const db = require('./sql/queries.js')
+const jwtutil = require('./routes/jwtutil.js');
 
 const port = process.env.PORT
 

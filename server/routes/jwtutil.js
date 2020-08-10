@@ -2,33 +2,33 @@ let jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const queries = require('../sql/queries.js');
 
-let checkToken = (req, res, next, minLevel) => {
+let checkToken = (req, res, next, minLevel, key) => {
   let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
-  if (token.startsWith('Bearer ')) {
-    // Remove Bearer from string
-    token = token.slice(7, token.length);
-  }
-
+  
   if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-      if (err) {
-        return res.json({
-          success: false,
-          message: 'Token is not valid'
-        });
-      } else {
+    if (token.startsWith('Bearer ')) {
+      // Remove Bearer from string
+      token = token.slice(7, token.length);
+    }
 
-        if (decoded.user.level >= minLevel) {
-          req.jwt = decoded;
-          next();
-        } else {
+    if (token) {
+      jwt.verify(token, key, (err, decoded) => {
+        if (err) {
           return res.json({
             success: false,
             message: 'Token is not valid'
           });
+        } else {
+          req.jwt = decoded;
+          next();
         }
-      }
-    });
+      });
+    } else {
+      return res.json({
+        success: false,
+        message: 'Auth token is not supplied'
+      });
+    }
   } else {
     return res.json({
       success: false,
@@ -38,15 +38,19 @@ let checkToken = (req, res, next, minLevel) => {
 };
 
 let checkTokenForAdmin = (req, res, next) => {
-  return checkToken(req, res, next, 100);
+  return checkToken(req, res, next, 100, process.env.JWT_SECRET);
 }
 
 let checkTokenForAdminOrMaintenance = (req, res, next) => {
-  return checkToken(req, res, next, 2);
+  return checkToken(req, res, next, 2, process.env.JWT_SECRET);
 }
 
 let checkTokenAllUsers = (req, res, next) => {
-  return checkToken(req, res, next, 0);
+  return checkToken(req, res, next, 0, process.env.JWT_SECRET);
+}
+
+let checkTokenForServers = (req, res, next) => {
+  return checkToken(req, res, next, 0, process.env.JWT_SERVER_SECRET);
 }
 
 let checkIotAccess = (req, res, next) => {
@@ -91,5 +95,6 @@ module.exports = {
   checkTokenForAdminOrMaintenance,
   checkTokenAllUsers,
   checkIotAccess,
-  genRandomString
+  genRandomString,
+  checkTokenForServers
 }
