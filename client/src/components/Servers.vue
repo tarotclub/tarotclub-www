@@ -1,6 +1,7 @@
 
 <template>
-  <v-card>
+<div>
+  <v-card v-show="connection == 0">
     <v-card-title>
       Liste des serveurs
       <v-spacer></v-spacer>
@@ -17,8 +18,23 @@
       :headers="headers"
       :items="servers"
       :search="search"
-    ></v-data-table>
+    >
+    
+    <template v-slot:item.join="{ item }">
+      <v-icon medium class="mr-2" @click="joinServer(item)" >mdi-play-network</v-icon>
+    </template>
+    
+    </v-data-table>
   </v-card>
+
+  <v-card v-show="connection == 1">
+    <v-card-title>
+      Connexion au serveur ...
+      <v-spacer></v-spacer>
+    </v-card-title>
+  </v-card>
+
+</div>
 </template>
 
 <script>
@@ -26,17 +42,26 @@
     data () {
       return {
         search: '',
+        connection: 0,
         headers: [
           { text: 'Server name', value: 'name' },
           { text: 'Number of players', value: 'nb_players' },
           { text: 'Number of tables', value: 'nb_tables' },
           { text: 'Region', value: 'region' },
           { text: 'Server type', value: 'server_type' },
-          { text: 'Privacy', value: 'privacy' }
+          { text: 'Privacy', value: 'privacy' },
+          { text: 'Rejoindre', value: 'join', sortable: false }
         ],
         servers: [
         ],
       }
+    },
+    methods: {
+      joinServer(server) {
+        console.log("[SERVERS] Connect to server: ");
+        this.connection = 1;
+      },
+
     },
     mounted() {
       this.$api.getAllServers().then( result => {

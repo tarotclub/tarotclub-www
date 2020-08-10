@@ -89,6 +89,7 @@ router.post('/status', JwtUtil.checkTokenForServers, (req, res, next) => {
     // Update status
     let token = req.body.token;
     let server = req.body.server;
+    server.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     let allowedServer = false;
 
   //  sendEventsToAll("coucou");
