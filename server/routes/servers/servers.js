@@ -1,12 +1,12 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const JwtUtil = require("../jwtutil.js");
+const WebSocket = require('ws');
 
 let list = new Map();
 let sskList = new Map();
 
-
-let clients = [];
+let tarotServers = [];
 
 router.get('/events', JwtUtil.checkTokenForServers, (req, res, next) => {
 
@@ -37,34 +37,34 @@ router.get('/events', JwtUtil.checkTokenForServers, (req, res, next) => {
     //     res.write(`data: ${JSON.stringify({num: counter})}\n\n`); // res.write() instead of res.send()
     // }, 1000);
     
-    const clientId = Date.now();
+    const tarotServerId = Date.now();
     const timerId = setInterval(() => {
                 // Emit an SSE that contains the current 'count' as a string
-                sendEventsToOneServer("Allow player", { payer: "plop" }, clientId);
+                sendEventsToOneServer("Allow player", { payer: "plop" }, tarotServerId);
             }, 1000);
 
     const newClient = {
-      id: clientId,
+      id: tarotServerId,
       res,
       timerId: timerId
     };
-    console.log("[SSE] New connection: " + clientId);
+    console.log("[SSE] New connection: " + tarotServerId);
 
-    clients.push(newClient);
+    tarotServers.push(newClient);
 
-    // When client closes connection we update the clients list
+    // When client closes connection we update the tarotServers list
     // avoiding the disconnected one
     res.on('close', () => {
-       console.log("[SSE] Connection closed: " + clientId);
+       console.log("[SSE] Connection closed: " + tarotServerId);
        clearInterval(timerId);
-       clients = clients.filter(c => c.id !== clientId);
+       tarotServers = tarotServers.filter(c => c.id !== tarotServerId);
       
     });
 });
 
-function sendEventsToOneServer(message, data, clientId) {
-    clients.forEach((c) => {
-        if (c.id == clientId) {
+function sendEventsToOneServer(message, data, tarotServerId) {
+    tarotServers.forEach((c) => {
+        if (c.id == tarotServerId) {
             c.res.write(JSON.stringify({
                 success: true,
                 data: data,
@@ -74,9 +74,9 @@ function sendEventsToOneServer(message, data, clientId) {
     });
 }
 
-// Iterate clients list and use write res object method to send new nest
+// Iterate tarotServers list and use write res object method to send new nest
 function sendEventsToAll(message) {
-    clients.forEach(c => c.res.write(JSON.stringify({
+    tarotServers.forEach(c => c.res.write(JSON.stringify({
             success: true,
             data: { },
             message: message
@@ -108,6 +108,10 @@ router.post('/status', JwtUtil.checkTokenForServers, (req, res, next) => {
             data: {},
             message: 'Status updated'
         });
+
+        // On envoie à tous les clients connectés la liste des serveurs
+        sendToAllClients(getServerList());
+
     } else {
         res.status(200).json({
             success: false,
@@ -133,8 +137,7 @@ router.post('/register', (req, res) => {
         // TODO: il doit avoir été créé avant par un utilisateur valide
     }
 
-    if (allowedServer)
-    {
+    if (allowedServer) {
 
         let ssk = JwtUtil.genRandomString(16);
 
@@ -158,6 +161,10 @@ router.post('/register', (req, res) => {
                 });
             } else {
                 console.log("[SERVERS] Added new server");
+
+                // On envoie à tous les clients connectés la liste des serveurs
+                sendToAllClients(getServerList());
+
                 res.status(200).json({
                     success: true,
                     data: {
@@ -177,15 +184,64 @@ router.post('/register', (req, res) => {
     
 });
 
+// router.get('/list', (req, res) => {
 
-router.get('/list', (req, res) => {
-
-    res.status(200).json({
-        success: true,
-        data: Array.from(list).map( ([k,v]) => {return v} ),
-        message: 'Servers list'
-    });
+//     res.status(200).json({
+//         success: true,
+//         data: Array.from(list).map( ([k,v]) => {return v} ),
+//         message: 'Servers list'
+//     });
     
+// });
+
+ 
+const wss = new WebSocket.Server({ port: 6000 });
+
+function noop() {}
+function getServerList()
+{
+    return JSON.stringify({
+        data: Array.from(list).map( ([k,v]) => {return v} ),
+        command: 'serverList'
+    });
+}
+
+wss.on('connection', function connection(ws) {
+
+    console.log('[WS] Client connected');
+
+    ws.on('message', function incoming(message) {
+        console.log('received: %s', message);
+    });
+
+    ws.isAlive = true;
+    ws.on('pong', function heartbeat() {
+        this.isAlive = true;
+    });
+
+    ws.send(getServerList());
+
+});
+
+function sendToAllClients(data) {
+    wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(data);
+        }
+    });
+}
+
+const wsPingInterval = setInterval(function ping() {
+    wss.tarotServers.forEach(function each(ws) {
+        if (ws.isAlive === false) return ws.terminate();
+
+        ws.isAlive = false;
+        ws.ping(noop);
+    });
+}, 30000);
+
+wss.on('close', function close() {
+    clearInterval(wsPingInterval);
 });
 
 module.exports = router;

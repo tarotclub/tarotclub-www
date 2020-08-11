@@ -8,6 +8,7 @@ import router from './router.js'
 import store from './store/AppStore'
 import Api from './Api.js'
 import TarotClient from './tarot-client.js'
+import ReconnectingWebSocket from 'reconnecting-websocket';
 
 Vue.use(Vuex);
 Vue.use(VueRouter);
@@ -49,23 +50,78 @@ new Vue({
   vuetify: new Vuetify(opts),
   router,
   store,
+
   render: h => h(App),
+  //====================================================================================================================
   beforeCreate: function() {
     this.$api.loadToken();
-    // this.$api.getMyProfile().then((response) => {
+    this.$api.getMyProfile().then((response) => {
 
-    //     if (response.success) {
-    //       this.$store.commit('user/LOGIN_SUCCESS', response.data.profile);
-           
+        if (response.success) {
+          this.$store.commit('user/LOGIN_SUCCESS', response.data.profile);
+        } else {
+          console.log("Not logged in.");
+          this.$store.commit('user/LOGIN_FAILURE');
+          this.$store.commit('SET_INITIALIZED', true);
+        }
+    }).catch((error) => {
+      console.log(error);
+    });
+  },
+  //====================================================================================================================
+  beforeDestroy() {
+    this.$eventHub.$off('sendToServer');
+  },
+  //====================================================================================================================
+  created() {
+ 
+    try {
+      let host = this.$api.getWebSocketHost();
+      console.log('[WS] Host: ' + host);
+      this.$options.felunWebSocket = new ReconnectingWebSocket(host);
+    } catch (error) {
+      console.log('[WS] Error: ' + error);
+    }
+      
+  
+      this.$options.felunWebSocket.onopen = (event) => {
+        console.log('[WS] Open');
+      };
 
-    //     } else {
-    //       console.log("Not logged in.");
-    //       this.$store.commit('user/LOGIN_FAILURE');
-    //       this.$store.commit('SET_INITIALIZED', true);
-    //     }
-    // }).catch((error) => {
-    //   console.log(error);
-    // })
+      this.$options.felunWebSocket.onerror = (event) => {
+        console.log('[WS] Error!');
+      };
+
+      this.$options.felunWebSocket.onclose = (event) => {
+        console.log('[WS] Closed!');
+      };
+
+      
+  
+      this.$options.felunWebSocket.onmessage = (message) => {
+        console.log("[WS] Received: " + message.data);
+        
+        // On bradcast ce que l'on reçoit
+        try {
+          let wsInfo = JSON.parse(message.data);
+
+          if (wsInfo.command == 'serverList') {
+            this.$store.commit('server/SET_SERVERS', wsInfo.data);
+          }
+
+        } catch (error) {
+          console.log('[WS] Parse error: ' + error)
+        }
+      };
+
+      this.$eventHub.$on('sendToServer', order => {
+        console.log("[WS] Sending data to server: ");
+        // add token for security
+        order.token = this.$api.getToken();
+        this.$options.felunWebSocket.send(JSON.stringify(order));
+      });
   }
+
+  
 }).$mount('#app')
 

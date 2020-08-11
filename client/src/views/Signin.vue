@@ -72,7 +72,7 @@ export default {
             this.$refs.loginForm.reset();
         },
         checkForm (e) {
-            this.$api.signIn( {username: this.username, password: this.password }).then( result => {
+            this.$api.signin( {username: this.username, password: this.password }).then( result => {
                 if (result.success) {
                     this.$api.setToken(result.data.token);
                     this.$store.commit('user/LOGIN_SUCCESS', result.data.profile);

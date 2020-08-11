@@ -42,7 +42,6 @@
     data () {
       return {
         search: '',
-        connection: 0,
         headers: [
           { text: 'Server name', value: 'name' },
           { text: 'Number of players', value: 'nb_players' },
@@ -51,29 +50,49 @@
           { text: 'Server type', value: 'server_type' },
           { text: 'Privacy', value: 'privacy' },
           { text: 'Rejoindre', value: 'join', sortable: false }
-        ],
-        servers: [
-        ],
+        ]
       }
     },
+    //====================================================================================================================
+    computed: {
+      servers() {
+        // Or whatever criteria you decide on to represent that the
+        // app state has finished loading.
+        return this.$store.state.server.list;
+      },
+      connection() {
+        // Or whatever criteria you decide on to represent that the
+        // app state has finished loading.
+        return this.$store.state.server.connection;
+      },
+    },
+    //====================================================================================================================
     methods: {
       joinServer(server) {
         console.log("[SERVERS] Connect to server: ");
         this.connection = 1;
+
+        // // Not a real URL, just using for demo purposes
+        // let es = new EventSource(this.$api.getRESTApiUri() + '/connect');
+
+        // es.addEventListener('message', event => {
+        //     let data = JSON.parse(event.data);
+        //     this.stockData = data.stockData;
+        // }, false);
       },
-
     },
+    //====================================================================================================================
     mounted() {
-      this.$api.getAllServers().then( result => {
-          if (result.success) {
-             this.servers = result.data;
-          } else {
-              this.$eventHub.$emit('setAlert', 'Impossible de récupérer la liste des serveurs', 'error', 3000);
-          }
+      // this.$api.getAllServers().then( result => {
+      //     if (result.success) {
+      //        this.servers = result.data;
+      //     } else {
+      //         this.$eventHub.$emit('setAlert', 'Impossible de récupérer la liste des serveurs', 'error', 3000);
+      //     }
 
-      }).catch(error => {
-          console.error(error);
-      });
+      // }).catch(error => {
+      //     console.error(error);
+      // });
     }
   }
 </script>
