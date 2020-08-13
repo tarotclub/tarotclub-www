@@ -232,7 +232,7 @@ function sendToAllClients(data) {
 }
 
 const wsPingInterval = setInterval(function ping() {
-    wss.tarotServers.forEach(function each(ws) {
+    wss.clients.forEach(function each(ws) {
         if (ws.isAlive === false) return ws.terminate();
 
         ws.isAlive = false;
