@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const JwtUtil = require("../jwtutil.js");
-const WebSocket = require('ws');
+// const WebSocket = require('ws');
 
 let list = new Map();
 let sskList = new Map();
@@ -194,6 +194,32 @@ router.post('/register', (req, res) => {
     
 // });
 
+function getServerList()
+{
+    return JSON.stringify({
+        data: Array.from(list).map( ([k,v]) => {return v} ),
+        command: 'serverList'
+    });
+}
+
+const WebSocket = require("../websocket.js");
+
+const ws = new WebSocket();
+
+ws.start("127.0.0.1", 6000, function handleCommands(message)  {
+
+    try {
+        let cmd = JSON.parse(message);
+
+
+    } catch (error) {
+        
+    }
+
+});
+
+
+/*
  
 const wss = new WebSocket.Server({ port: 6000 });
 
@@ -243,5 +269,7 @@ const wsPingInterval = setInterval(function ping() {
 wss.on('close', function close() {
     clearInterval(wsPingInterval);
 });
+
+*/
 
 module.exports = router;
