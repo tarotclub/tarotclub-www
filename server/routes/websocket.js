@@ -20,57 +20,7 @@ class WebSocket {
         this.clients = [];
     }
 
-    stopKeepAlive(responseAndType) {
-        if (responseAndType.keepAliveTimeout) {
-            clearTimeout(responseAndType.keepAliveTimeout);
-            responseAndType.keepAliveTimeout = 0;
-        }
-    }
-
-    keepAlive(responseAndType) {
-        stopKeepAlive(responseAndType);
-        responseAndType.keepAliveTimeout = setTimeout(function keepAliveTimeout() {
-            if (responseAndType[0]) {
-                responseAndType[0].write(
-                    responseAndType[1] === REQUEST_TYPE_WEBSOCKET
-                        ? webSocketPingBuffer
-                        : (
-                            responseAndType[1] === REQUEST_TYPE_SSE
-                                ? ":\n\n"
-                                : "2[]"
-                        )
-                );
-            }
-        }, KEEP_ALIVE);
-    }
-
-    writeMessage(responseAndType, data, terminate) {
-        if (!responseAndType[0]) {
-            return;
-        }
-
-        if (responseAndType[1] === REQUEST_TYPE_WEBSOCKET) {
-            webSocketWrite(responseAndType[0], data);
-        } else {
-            responseAndType[0][terminate ? "end" : "write"](
-                responseAndType[1] === REQUEST_TYPE_SSE
-                    ? "data:" + data + "\n\n"
-                    : data.length + data
-            );
-        }
-
-        if (terminate) {
-            stopKeepAlive(responseAndType);
-            if (responseAndType[1] === REQUEST_TYPE_WEBSOCKET && responseAndType[0] && !responseAndType[0].isDestroyed) {
-                responseAndType[0].end(webSocketCloseBuffer);
-                responseAndType[0] = null;
-            }
-        } else {
-            keepAlive(responseAndType);
-        }
-    }
-
-    webSocketWrite(socket, data) {
+    webSocketWrite(data) {
         /* eslint-disable capitalized-comments */
 
         // Copy the data into a buffer
@@ -95,7 +45,7 @@ class WebSocket {
 
         // Write the data to the data buffer
         data.copy(buffer, 2 + lengthByteCount);
-        socket.write(buffer);
+        this.socket.write(buffer);
     }
 
     webSocketGetMessage(buffer) {
@@ -109,7 +59,6 @@ class WebSocket {
         }
 
         const firstByte = buffer.readUInt8(0);
-
 
         const isFinalFrame = Boolean((firstByte >>> 7) & 0x1);
         // const [reserved1, reserved2, reserved3] = [
@@ -146,7 +95,7 @@ class WebSocket {
             }
         }
 
-        if (payloadLength + currentOffset > buffer.length) {
+        if ((payloadLength + currentOffset) > buffer.length) {
             return ["", 0];
         }
 
@@ -211,7 +160,7 @@ class WebSocket {
 
         // See https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers
         this.server.on("upgrade", (request, socket) => {
-            const responseAndType = [socket, REQUEST_TYPE_WEBSOCKET];
+            this.socket = socket;
 
             const clientId = Date.now();
 
@@ -221,13 +170,12 @@ class WebSocket {
 
             socket.on("close", () => {
                 console.log('[WS] Closed');
-                responseAndType[0] = null;
                 this.clients = this.clients.filter(c => c.id !== clientId);
             });
 
             if (request.headers.upgrade.toLowerCase() !== "websocket") {
-                socket.end("HTTP/1.1 400 Bad Request");
-                console.error("WS: FAILED - HTTP header 'Upgrade' is not 'websocket' ");
+                socket.end("HTTP/1.1 400 Bad Request\r\n");
+                console.error("[WS] FAILED - HTTP header 'Upgrade' is not 'websocket' ");
                 return;
             }
 
@@ -263,6 +211,9 @@ class WebSocket {
             let receivedBytes = null;
 
             socket.on("data", (buffer) => {
+
+                // console.log(buffer.toString());
+
                 if (receivedBytes) {
                     buffer = Buffer.concat([receivedBytes, buffer]);
                     receivedBytes = null;
@@ -275,8 +226,8 @@ class WebSocket {
                             handleCommands(wsMessage[0]);
                         }
                     } else if (wsMessage === null) {
-                        if (responseAndType[0] && !socket.isDestroyed) {
-                            responseAndType[0] = null;
+                        if (this.socket && !socket.isDestroyed) {
+                            this.socket = null;
                             socket.end(webSocketCloseBuffer);
                         }
                         return;

@@ -122,15 +122,13 @@ router.post('/status', JwtUtil.checkTokenForServers, (req, res, next) => {
 });
 
 
-router.post('/register', (req, res) => {
-
-    let token = req.body.token;
-    let server = req.body.server;
+function registerNewServer(server, token)
+{
     let allowedServer = false;
 
   //  sendEventsToAll("coucou");
 
-    if (req.body.token == process.env.TCDS_OFFICIAL_TOKEN1) {
+    if (token == process.env.TCDS_OFFICIAL_TOKEN1) {
         allowedServer = true;
     } else {
         // Serveur non officiel
@@ -138,8 +136,6 @@ router.post('/register', (req, res) => {
     }
 
     if (allowedServer) {
-
-        let ssk = JwtUtil.genRandomString(16);
 
         // Create JWT
         const serverObj = {
@@ -149,40 +145,28 @@ router.post('/register', (req, res) => {
 
         // server object contains only public information, keep token and ssk private!
         list.set(token, server);
+        
+
+        let ssk = jwt.sign ({server: serverObj}, process.env.JWT_SERVER_SECRET);
+        console.log("[SERVERS] Added new server");
+        
         sskList.set(token, ssk);
 
-        jwt.sign ({server: serverObj}, process.env.JWT_SERVER_SECRET, (err, ssk) => {
-
-            if (err) {
-                res.status(200).json({
-                    success: false,
-                    data: {},
-                    message: '[SERVERS] Error, cannot sign'
-                });
-            } else {
-                console.log("[SERVERS] Added new server");
-
-                // On envoie à tous les clients connectés la liste des serveurs
-                sendToAllClients(getServerList());
-
-                res.status(200).json({
-                    success: true,
-                    data: {
-                        ssk: ssk,
-                    },
-                    message: 'Server registered'
-                });
-            }
-        });
+        return {
+            success: true,
+            data: {
+                ssk: ssk,
+            },
+            message: 'Server registered'
+        };
     } else {
-        res.status(200).json({
+        return {
             success: false,
             data: {},
             message: 'Cannot add server'
-        });
-    }
-    
-});
+        };
+    }   
+};
 
 // router.get('/list', (req, res) => {
 
@@ -209,13 +193,22 @@ const ws = new WebSocket();
 ws.start("127.0.0.1", 6000, function handleCommands(message)  {
 
     try {
-        let cmd = JSON.parse(message);
+        let json = JSON.parse(message);
 
+        if (json.command == 'server_register') {
+            let res = registerNewServer(json.server, json.token);
+            ws.webSocketWrite(JSON.stringify(res));
+         //   socket.write(JSON.stringify(res));
+
+            // On envoie à tous les clients connectés la liste des serveurs
+            // sendToAllClients(getServerList());
+        } else if (json.command == 'server_status') {
+            list.set(json.token, json.server);
+        }
 
     } catch (error) {
-        
+        console.log(error);
     }
-
 });
 
 
