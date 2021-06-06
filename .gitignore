@@ -4,3 +4,7 @@ server/node_modules/
 client/node_modules/
 
 client/dist/
+
+docs/localhost.key
+
+docs/localhost.crt

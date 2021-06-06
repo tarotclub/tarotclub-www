@@ -252,7 +252,7 @@ class WebSocket {
         });
 
         this.server.listen(port, host, function () {
-            console.log("Server listening on: http://%s:%s", host, port);
+            console.log("[WS] Server listening on: http://%s:%s", host, port);
         });
     }
 }

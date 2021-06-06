@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node -r dotenv/config app.js dotenv_config_path=../../tarotclub.env",
-    "debug": "node -r dotenv/config --nolazy --inspect-brk app.js dotenv_config_path=../../tarotclub.env"
+    "debug": "node -r dotenv/config --nolazy app.js dotenv_config_path=../../tarotclub.env"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +26,7 @@
     "nodemailer": "^6.3.1",
     "pg-promise": "^10.3.1",
     "uniqid": "^5.2.0",
-    "ws": "^7.3.1"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"

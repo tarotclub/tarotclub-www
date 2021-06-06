@@ -14,7 +14,7 @@ import Home from './views/Home';
 import Signin from './views/Signin';
 import Signup from './views/Signup';
 // import NewPassword from './views/NewPassword';
-
+import Docs from './views/Docs';
 
 Vue.use(VueRouter)
 
@@ -35,6 +35,11 @@ const router = new VueRouter({
         path: '/signup',
         name: 'signup',
         component: Signup
+      },
+      {
+        path: '/docs',
+        name: 'docs',
+        component: Docs
       },
       { 
         path: "*", redirect: '/'

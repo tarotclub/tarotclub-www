@@ -6,12 +6,12 @@ module.exports = {
     https: false,
     proxy: {
       '^/api': {
-        target: 'http://localhost:5000',
+        target: 'https://localhost:443',
         ws: true,
         changeOrigin: true,
         logLevel: "debug",
         onProxyReq: function(request) {
-          request.setHeader("origin", "http://localhost:5000");
+          request.setHeader("origin", "https://localhost:443");
         },
       },
     }

@@ -12,10 +12,22 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
    sodipodi:docname="architecture.svg">
   <defs
      id="defs2">
+    <rect
+       x="141.08509"
+       y="142.58374"
+       width="48.378931"
+       height="19.429671"
+       id="rect1103" />
+    <rect
+       x="-201.24907"
+       y="-159.50769"
+       width="300.99282"
+       height="69.970078"
+       id="rect1095" />
     <marker
        inkscape:stockid="Arrow1Lstart"
        orient="auto"
@@ -314,8 +326,8 @@
     <rect
        x="-18.759266"
        y="53.506294"
-       width="55.648033"
-       height="30.072906"
+       width="96.756765"
+       height="30.291849"
        id="rect839-4-2" />
     <rect
        x="-18.759266"
@@ -379,16 +391,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.75562409"
-     inkscape:cx="411.57738"
-     inkscape:cy="369.25748"
+     inkscape:zoom="0.53430692"
+     inkscape:cx="280.24717"
+     inkscape:cy="687.21804"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="3840"
-     inkscape:window-height="2041"
-     inkscape:window-x="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1065"
+     inkscape:window-x="3840"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
@@ -408,8 +420,8 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:none;stroke:#000000;stroke-width:0.331833px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 60.072033,-42.556723 V 196.01516"
+       style="fill:none;stroke:#000000;stroke-width:0.427987px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 60.072033,-107.13246 V 289.73113"
        id="path833" />
     <rect
        style="fill:#87cdde;stroke:#000000;stroke-width:0.565574;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -425,17 +437,13 @@
        transform="translate(-32.795415,6.5507191)"
        x="24.566896"
        y="0"><tspan
-         x="-6.2627279"
-         y="62.869599"
-         id="tspan1086"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1084">Client
+         x="-4.4643938"
+         y="63.038813"><tspan
+           style="text-align:center;text-anchor:middle">Client
 </tspan></tspan><tspan
-         x="-16.256918"
-         y="76.098725"
-         id="tspan1090"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1088">(browser)</tspan></tspan></text>
+         x="-13.280365"
+         y="76.267939"><tspan
+           style="text-align:center;text-anchor:middle">(browser)</tspan></tspan></text>
     <text
        y="0"
        x="24.566896"
@@ -444,22 +452,16 @@
        id="text837-1"
        xml:space="preserve"><tspan
          x="-18.759766"
-         y="62.869599"
-         id="tspan1095"><tspan
-           style="shape-inside:url(#rect839-3)"
-           id="tspan1093">Back-end
+         y="63.038813"><tspan
+           style="shape-inside:url(#rect839-3)">Back-end
 </tspan></tspan><tspan
          x="-18.759766"
-         y="76.098725"
-         id="tspan1099"><tspan
-           style="shape-inside:url(#rect839-3)"
-           id="tspan1097">Server
+         y="76.267939"><tspan
+           style="shape-inside:url(#rect839-3)">Server
 </tspan></tspan><tspan
          x="-18.759766"
-         y="89.327851"
-         id="tspan1103"><tspan
-           style="shape-inside:url(#rect839-3)"
-           id="tspan1101">(Node.js)</tspan></tspan></text>
+         y="89.497065"><tspan
+           style="shape-inside:url(#rect839-3)">(Node.js)</tspan></tspan></text>
     <text
        y="0"
        x="49.15963"
@@ -467,73 +469,36 @@
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect839-4);fill:#000000;fill-opacity:1;stroke:none;"
        id="text837-9"
        xml:space="preserve"><tspan
-         x="-3.0511904"
-         y="62.869599"
-         id="tspan1108"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1106">TarotClub
+         x="-0.83169466"
+         y="63.038813"><tspan
+           style="text-align:center;text-anchor:middle">TarotClub
 </tspan></tspan><tspan
-         x="-15.608523"
-         y="76.098725"
-         id="tspan1114"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1110">Official </tspan><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1112">Server </tspan></tspan><tspan
-         style="visibility:hidden"
-         x="-18.759766"
-         y="95.934052"
-         id="tspan1118"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1116">1</tspan></tspan></text>
-    <text
-       xml:space="preserve"
-       id="text837-9-1"
-       style="font-style:normal;font-weight:normal;font-size:10.58329964px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect839-4-4);fill:#000000;fill-opacity:1;stroke:none"
-       x="200.246"
-       y="97.559837"><tspan
-         x="135.28421"
-         y="160.42943"
-         id="tspan1123"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1121">TarotClub
-</tspan></tspan><tspan
-         x="137.73366"
-         y="173.65855"
-         id="tspan1127"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1125">Server 2</tspan></tspan></text>
+         x="-15.729963"
+         y="76.267939"><tspan
+           style="text-align:center;text-anchor:middle">Official </tspan><tspan
+           style="text-align:center;text-anchor:middle">Server </tspan><tspan
+           style="text-align:center;text-anchor:middle">1</tspan></tspan></text>
     <text
        xml:space="preserve"
        id="text837-9-8"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect839-4-2);fill:#000000;fill-opacity:1;stroke:none;"
-       transform="translate(151.35504,130.79556)"
+       transform="translate(132.36954,121.75124)"
        x="49.15963"
        y="0"><tspan
-         x="-15.802167"
-         y="62.869599"
-         id="tspan1132"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1130">TarotClub
+         x="6.9720163"
+         y="63.038813"><tspan
+           style="text-align:center;text-anchor:middle">TarotClub
 </tspan></tspan><tspan
-         x="-13.941821"
-         y="76.098725"
-         id="tspan1136"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1134">Server N</tspan></tspan></text>
+         x="-8.8047483"
+         y="76.267939"><tspan
+           style="text-align:center;text-anchor:middle">Official </tspan><tspan
+           style="text-align:center;text-anchor:middle">Server N</tspan></tspan></text>
     <text
        xml:space="preserve"
        id="text981"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect983);fill:#000000;fill-opacity:1;stroke:none;"><tspan
          x="97.658203"
-         y="-42.333526"
-         id="tspan1141"><tspan
-           id="tspan1139">Server computer
-</tspan></tspan><tspan
-         x="97.658203"
-         y="-29.1044"
-         id="tspan1145"><tspan
-           id="tspan1143">(local network)</tspan></tspan></text>
+         y="-42.164312"><tspan>tarotclub.fr server</tspan></tspan></text>
     <text
        xml:space="preserve"
        id="text837-9-88"
@@ -542,10 +507,8 @@
        x="49.15963"
        y="0"><tspan
          x="-18.759766"
-         y="62.869599"
-         id="tspan1150"><tspan
-           style="shape-inside:url(#rect839-4-9)"
-           id="tspan1148">Internet</tspan></tspan></text>
+         y="63.038813"><tspan
+           style="shape-inside:url(#rect839-4-9)">Internet</tspan></tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1594)"
        d="M 10.770738,63.837189 111.67752,5.5786318"
@@ -569,19 +532,14 @@
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect839-4-4-8);fill:#000000;fill-opacity:1;stroke:none;"
        id="text837-9-1-3"
        xml:space="preserve"><tspan
-         x="13.434161"
-         y="62.869599"
-         id="tspan1160"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1158">TarotClub
+         x="15.653657"
+         y="63.038813"><tspan
+           style="text-align:center;text-anchor:middle">TarotClub
 </tspan></tspan><tspan
-         x="-16.703438"
-         y="76.098725"
-         id="tspan1166"><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1162">Community </tspan><tspan
-           style="text-align:center;text-anchor:middle"
-           id="tspan1164">Server X</tspan></tspan></text>
+         x="-10.512621"
+         y="76.267939"><tspan
+           style="text-align:center;text-anchor:middle">Community </tspan><tspan
+           style="text-align:center;text-anchor:middle">Server X</tspan></tspan></text>
     <path
        style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-end:url(#Arrow2Lend)"
        d="M 157.06666,92.356545 V 49.216434"
@@ -592,56 +550,37 @@
        style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1098);fill:#000000;fill-opacity:1;stroke:none;"
        transform="translate(-66.934846,-1.6615423)"><tspan
          x="168.84961"
-         y="69.808923"
-         id="tspan1172"><tspan
-           style="shape-inside:url(#rect1098)"
-           id="tspan1170">register/status
+         y="69.921733"><tspan
+           style="shape-inside:url(#rect1098)">register/status
 </tspan></tspan><tspan
          x="168.84961"
-         y="78.628374"
-         id="tspan1176"><tspan
-           style="shape-inside:url(#rect1098)"
-           id="tspan1174">(https REST)</tspan></tspan></text>
+         y="78.741184"><tspan
+           style="shape-inside:url(#rect1098)">(https REST)</tspan></tspan></text>
     <path
        id="path1348"
        d="M 167.44509,48.4636 V 91.603711"
        style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1352)" />
     <text
        transform="translate(1.520395,-0.32998564)"
-       style="font-style:normal;font-weight:normal;font-size:7.05556011px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1428);fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1428);fill:#000000;fill-opacity:1;stroke:none;"
        id="text1426"
        xml:space="preserve"><tspan
          x="168.84961"
-         y="69.808922"
-         id="tspan1191"
-         style="shape-inside:url(#rect1098)">reply SSK</tspan></text>
+         y="69.921733"><tspan
+           style="shape-inside:url(#rect1098)">reply SSK</tspan></tspan></text>
     <text
        transform="translate(-158.67156,-45.810483)"
        style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1734);fill:#000000;fill-opacity:1;stroke:none;"
        id="text1732"
        xml:space="preserve"><tspan
          x="168.84961"
-         y="69.808923"
-         id="tspan1196"><tspan
-           style="shape-inside:url(#rect1734)"
-           id="tspan1194">Connect to Server</tspan></tspan></text>
+         y="69.921733"><tspan
+           style="shape-inside:url(#rect1734)">Connect to Server</tspan></tspan></text>
     <path
        inkscape:connector-curvature="0"
        style="fill:none;stroke:#000000;stroke-width:0.331833px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M -139.71067,210.2782 V 448.85009"
        id="path833-3" />
-    <text
-       xml:space="preserve"
-       id="text837-9-88-6"
-       style="font-style:normal;font-weight:normal;font-size:10.58329964px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect839-4-9);fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
-       x="-165.82863"
-       y="162.78677"><tspan
-         style="stroke-width:1"
-         x="-233.74802"
-         y="225.65637"
-         id="tspan1150-3">TC Server<tspan
-   style="shape-inside:url(#rect839-4-9);stroke-width:1"
-   id="tspan1148-2" /></tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1531)"
        d="m 196.78546,26.332456 h 46.22007 v 90.339234 h -42.01825"
@@ -660,9 +599,10 @@
            y="178.9288" /></flowRegion><flowPara
          id="flowPara1545">Server Sent Events</flowPara><flowPara
          id="flowPara1547">- Allow Player</flowPara><flowPara
-         id="flowPara1549">- Ping</flowPara></flowRoot>    <text
+         id="flowPara1549">- Ping</flowPara></flowRoot>
+    <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-93.840752"
        y="222.76776"
        id="text941"><tspan
@@ -670,7 +610,7 @@
          id="tspan939"
          x="-93.840752"
          y="222.76776"
-         style="stroke-width:0.26458332px">tarotclub.fr</tspan></text>
+         style="stroke-width:0.264583px">tarotclub.fr</tspan></text>
     <path
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1384)"
        d="M -80.725577,256.73251 H -211.33229"
@@ -698,7 +638,7 @@
        inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-177.17694"
        y="251.48021"
        id="text14360"><tspan
@@ -706,21 +646,21 @@
          id="tspan14358"
          x="-177.17694"
          y="251.48021"
-         style="font-size:7.76111126px;stroke-width:0.26458332px">Register with Token</tspan></text>
+         style="font-size:7.76111px;stroke-width:0.264583px">Register with Token</tspan></text>
     <text
        id="text14364"
        y="365.62979"
        x="-170.52405"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         style="font-size:7.76111126px;stroke-width:0.26458332px"
+         style="font-size:7.76111px;stroke-width:0.264583px"
          y="365.62979"
          x="-170.52405"
          id="tspan14362"
          sodipodi:role="line">Register</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-170.1739"
        y="334.46625"
        id="text14368"><tspan
@@ -728,14 +668,14 @@
          id="tspan14366"
          x="-170.1739"
          y="334.46625"
-         style="font-size:7.76111126px;stroke-width:0.26458332px">Subscribe SSE</tspan></text>
+         style="font-size:7.76111px;stroke-width:0.264583px">Subscribe SSE</tspan></text>
     <text
        id="text14372"
        y="284.04437"
        x="-180.32831"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         style="font-size:7.76111126px;stroke-width:0.26458332px"
+         style="font-size:7.76111px;stroke-width:0.264583px"
          y="284.04437"
          x="-180.32831"
          id="tspan14370"
@@ -744,12 +684,19 @@
        id="text14376"
        y="248.67899"
        x="-66.879044"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        xml:space="preserve"><tspan
-         style="font-size:7.76111126px;stroke-width:0.26458332px"
+         style="font-size:7.76111px;stroke-width:0.264583px"
          y="248.67899"
          x="-66.879044"
          id="tspan14374"
          sodipodi:role="line">List of accepted tokens : official servers or community</tspan></text>
+    <text
+       xml:space="preserve"
+       id="text1101"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1103);fill:#000000;fill-opacity:1;stroke:none;"
+       transform="matrix(4.9413245,0,0,4.9413245,-559.87414,-595.08177)"><tspan
+         x="141.08594"
+         y="152.11694"><tspan>...</tspan></tspan></text>
   </g>
 </svg>

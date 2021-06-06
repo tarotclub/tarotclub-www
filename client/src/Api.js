@@ -110,7 +110,7 @@ export default class Api {
      * GESTION DES SERVEURS DE JEU
      ****************************************************************/
      getAllServers() {
-        return axios.get('/server/list', this.config).then(this.handleResponse);
+        return axios.get('/servers/list', this.config).then(this.handleResponse);
      }
 
     /**************************************************************** 

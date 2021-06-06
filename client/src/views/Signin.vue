@@ -1,8 +1,7 @@
 <template>
-
     <!-- SIGN IN -->
 
-    <v-card width="400px" class="mx-auto" style="text-align:center; margin-top:100px; margin-bottom:50px">
+    <v-card width="400px" class="mx-auto" style="text-align:center; margin-top:50px; margin-bottom:50px">
         <v-col cols="12">
             <v-card class="mx-auto" width="360px" elevation="0">
                 <h1 style="padding-bottom:10px">Identification</h1>

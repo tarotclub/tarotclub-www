@@ -1,6 +1,54 @@
 <template>
+<div>
+      <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      :permanent="$vuetify.breakpoint.mdAndUp"
+      >
+        <v-list-item class="px-2">
+          <v-list-item-avatar>
+            <v-icon>mdi-account-circle</v-icon>
+            <!--<v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>-->
+          </v-list-item-avatar>
+
+    
+            <v-list-item-title v-if="isLogged">{{fullName}}</v-list-item-title>
+            <v-btn
+              icon
+              @click.stop="drawer = !drawer"
+            >
+              <v-icon>mdi-chevron-left</v-icon>
+            </v-btn>
+          
+        </v-list-item>
+
+        <v-divider></v-divider>
+
+    <!-- ================ MENU DE GAUCHE ================ -->
+        <v-list dense>
+
+          <v-list-item
+            v-for="item in menuItems"
+            :key="item.title"
+            :to="`/dashboard/` + item.page"
+          >
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+                            
+            <v-list-item-content>
+              <v-list-item-title>{{ item.text }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+    </v-navigation-drawer>
+
   <v-app-bar fixed app>
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+
+
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer" ></v-app-bar-nav-icon>
     <router-link to="/">
       <img class="mr-3" :src="require('../assets/logo.png')" height="40" />
     </router-link>
@@ -21,6 +69,7 @@
     <v-btn v-if="!isLogged" color="primary" :to="{name: 'signin'}">Connexion</v-btn>
     <v-btn v-if="!isLogged" color="success" :to="{name: 'signup'}" style="margin-left:10px;">S'inscrire</v-btn>
   </v-app-bar>
+</div>
 </template>
     
 <script>
@@ -31,6 +80,12 @@ export default {
     return {
       title: "TarotClub",
       showSessionDialog: false,
+      items: [
+          { text: 'Accueil', icon: 'mdi-home', page: 'home', user: true },
+          { text: 'Mon profil', icon: 'mdi-account', page: 'profile', user: true },
+          { text: 'Machines', icon: 'mdi-format-list-bulleted', page: 'machines', user: true },
+          { text: 'Utilisateurs', icon: 'mdi-account-group', page: 'users', user: false }
+      ],
       drawer: null,
     };
   },

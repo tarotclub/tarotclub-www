@@ -83,16 +83,18 @@
     },
     //====================================================================================================================
     mounted() {
-      // this.$api.getAllServers().then( result => {
-      //     if (result.success) {
-      //        this.servers = result.data;
-      //     } else {
-      //         this.$eventHub.$emit('setAlert', 'Impossible de récupérer la liste des serveurs', 'error', 3000);
-      //     }
+      this.$api.getAllServers().then( result => {
+          if (result.success) {
+            console.log(result.data);
+            //  this.servers = result.data;
+            this.$store.commit('server/SET_SERVERS', result.data);
+          } else {
+              this.$eventHub.$emit('setAlert', 'Impossible de récupérer la liste des serveurs', 'error', 3000);
+          }
 
-      // }).catch(error => {
-      //     console.error(error);
-      // });
+      }).catch(error => {
+          console.error(error);
+      });
     }
   }
 </script>

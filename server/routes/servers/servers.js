@@ -8,6 +8,8 @@ let sskList = new Map();
 
 let tarotServers = [];
 
+
+/*
 router.get('/events', JwtUtil.checkTokenForServers, (req, res, next) => {
 
     res.set({
@@ -61,7 +63,7 @@ router.get('/events', JwtUtil.checkTokenForServers, (req, res, next) => {
       
     });
 });
-
+*/
 function sendEventsToOneServer(message, data, tarotServerId) {
     tarotServers.forEach((c) => {
         if (c.id == tarotServerId) {
@@ -84,48 +86,20 @@ function sendEventsToAll(message) {
     );
 }
 
+router.get('/list', (req, res) => {
 
-router.post('/status', JwtUtil.checkTokenForServers, (req, res, next) => {
-    // Update status
-    let token = req.body.token;
-    let server = req.body.server;
-    server.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    let allowedServer = false;
-
-  //  sendEventsToAll("coucou");
-
-    if (req.body.token == process.env.TCDS_OFFICIAL_TOKEN1) {
-        allowedServer = true;
-    } else {
-        // Serveur non officiel
-        // TODO: il doit avoir été créé avant par un utilisateur valide
-    }
-
-    if (allowedServer) {
-        list.set(token, server);
-        res.status(200).json({
+    res.status(200).json({
             success: true,
-            data: {},
-            message: 'Status updated'
-        });
-
-        // On envoie à tous les clients connectés la liste des serveurs
-        sendToAllClients(getServerList());
-
-    } else {
-        res.status(200).json({
-            success: false,
-            data: {},
-            message: 'Status update forbidden'
-        });
-    }
+            data: Array.from(list).map( ([k,v]) => {return v} ),
+            message: 'Servers list'
+    });
 });
 
+router.post('/register', (req, res, next) => {
 
-function registerNewServer(server, token)
-{
     let allowedServer = false;
-
+    let token = req.body.token;
+    let server = req.body.server;
   //  sendEventsToAll("coucou");
 
     if (token == process.env.TCDS_OFFICIAL_TOKEN1) {
@@ -133,6 +107,7 @@ function registerNewServer(server, token)
     } else {
         // Serveur non officiel
         // TODO: il doit avoir été créé avant par un utilisateur valide
+        allowedServer = true;
     }
 
     if (allowedServer) {
@@ -152,117 +127,61 @@ function registerNewServer(server, token)
         
         sskList.set(token, ssk);
 
-        return {
+        res.status(200).json({
             success: true,
             data: {
                 ssk: ssk,
             },
             message: 'Server registered'
-        };
+        });
+
     } else {
-        return {
+        res.status(200).json({
             success: false,
             data: {},
-            message: 'Cannot add server'
-        };
-    }   
-};
-
-// router.get('/list', (req, res) => {
-
-//     res.status(200).json({
-//         success: true,
-//         data: Array.from(list).map( ([k,v]) => {return v} ),
-//         message: 'Servers list'
-//     });
-    
-// });
-
-function getServerList()
-{
-    return JSON.stringify({
-        data: Array.from(list).map( ([k,v]) => {return v} ),
-        command: 'serverList'
-    });
-}
-
-const WebSocket = require("../websocket.js");
-
-const ws = new WebSocket();
-
-ws.start("127.0.0.1", 6000, function handleCommands(message)  {
-
-    try {
-        let json = JSON.parse(message);
-
-        if (json.command == 'server_register') {
-            let res = registerNewServer(json.server, json.token);
-            ws.webSocketWrite(JSON.stringify(res));
-         //   socket.write(JSON.stringify(res));
-
-            // On envoie à tous les clients connectés la liste des serveurs
-            // sendToAllClients(getServerList());
-        } else if (json.command == 'server_status') {
-            list.set(json.token, json.server);
-        }
-
-    } catch (error) {
-        console.log(error);
+            message: 'Cannot register server'
+        });
     }
 });
 
+router.post('/status', JwtUtil.checkTokenForServers, (req, res, next) => {
+    // Update status
+    let token = req.body.token;
+    let server = req.body.server;
+    server.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    let allowedServer = false;
 
-/*
- 
-const wss = new WebSocket.Server({ port: 6000 });
+    console.log("[TCDS] Received status from server");
 
-function noop() {}
-function getServerList()
-{
-    return JSON.stringify({
-        data: Array.from(list).map( ([k,v]) => {return v} ),
-        command: 'serverList'
-    });
-}
+  //  sendEventsToAll("coucou");
 
-wss.on('connection', function connection(ws) {
+    if (req.body.token == process.env.TCDS_OFFICIAL_TOKEN1) {
+        allowedServer = true;
+    } else {
+        // Serveur non officiel
+        // TODO: il doit avoir été créé avant par un utilisateur valide
+        allowedServer = true;
+    }
 
-    console.log('[WS] Client connected');
+    if (allowedServer) {
+        list.set(token, server);
+        res.status(200).json({
+            success: true,
+            data: {},
+            message: 'Status updated'
+        });
 
-    ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
-    });
+        // On envoie à tous les clients connectés la liste des serveurs
+        // sendToAllClients(getServerList());
 
-    ws.isAlive = true;
-    ws.on('pong', function heartbeat() {
-        this.isAlive = true;
-    });
-
-    ws.send(getServerList());
-
+    } else {
+        res.status(200).json({
+            success: false,
+            data: {},
+            message: 'Status update forbidden'
+        });
+    }
 });
 
-function sendToAllClients(data) {
-    wss.clients.forEach(function each(client) {
-        if (client.readyState === WebSocket.OPEN) {
-            client.send(data);
-        }
-    });
-}
-
-const wsPingInterval = setInterval(function ping() {
-    wss.clients.forEach(function each(ws) {
-        if (ws.isAlive === false) return ws.terminate();
-
-        ws.isAlive = false;
-        ws.ping(noop);
-    });
-}, 30000);
-
-wss.on('close', function close() {
-    clearInterval(wsPingInterval);
-});
-
-*/
 
 module.exports = router;

@@ -74,7 +74,7 @@ new Vue({
   },
   //====================================================================================================================
   created() {
- 
+ /*
     try {
       let host = this.$api.getWebSocketHost();
       console.log('[WS] Host: ' + host);
@@ -96,7 +96,7 @@ new Vue({
         console.log('[WS] Closed!');
       };
 
-      
+   
   
       this.$options.felunWebSocket.onmessage = (message) => {
         console.log("[WS] Received: " + message.data);
@@ -120,6 +120,8 @@ new Vue({
         order.token = this.$api.getToken();
         this.$options.felunWebSocket.send(JSON.stringify(order));
       });
+
+      */
   }
 
   
