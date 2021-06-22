@@ -9,12 +9,12 @@ import VueRouter from 'vue-router';
 
 //============================  VIEWS ============================
 import Home from './views/Home';
-// import Dashboard from './views/Dashboard';
-// import ResetPassword from './views/ResetPassword';
+import ResetPassword from './views/ResetPassword';
 import Signin from './views/Signin';
 import Signup from './views/Signup';
-// import NewPassword from './views/NewPassword';
+import NewPassword from './views/NewPassword';
 import Docs from './views/Docs';
+import GameView from './views/GameView';
 
 Vue.use(VueRouter)
 
@@ -35,6 +35,21 @@ const router = new VueRouter({
         path: '/signup',
         name: 'signup',
         component: Signup
+      },
+      {
+        path: '/newpass',
+        name: 'newpass',
+        component: NewPassword
+      },
+      {
+        path: '/resetpass',
+        name: 'resetpass',
+        component: ResetPassword
+      },
+      {
+        path: '/game',
+        name: 'game',
+        component: GameView
       },
       {
         path: '/docs',

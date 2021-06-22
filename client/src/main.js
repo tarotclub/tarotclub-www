@@ -74,54 +74,7 @@ new Vue({
   },
   //====================================================================================================================
   created() {
- /*
-    try {
-      let host = this.$api.getWebSocketHost();
-      console.log('[WS] Host: ' + host);
-      this.$options.felunWebSocket = new ReconnectingWebSocket(host);
-    } catch (error) {
-      console.log('[WS] Error: ' + error);
-    }
-      
-  
-      this.$options.felunWebSocket.onopen = (event) => {
-        console.log('[WS] Open');
-      };
 
-      this.$options.felunWebSocket.onerror = (event) => {
-        console.log('[WS] Error!');
-      };
-
-      this.$options.felunWebSocket.onclose = (event) => {
-        console.log('[WS] Closed!');
-      };
-
-   
-  
-      this.$options.felunWebSocket.onmessage = (message) => {
-        console.log("[WS] Received: " + message.data);
-        
-        // On bradcast ce que l'on reçoit
-        try {
-          let wsInfo = JSON.parse(message.data);
-
-          if (wsInfo.command == 'serverList') {
-            this.$store.commit('server/SET_SERVERS', wsInfo.data);
-          }
-
-        } catch (error) {
-          console.log('[WS] Parse error: ' + error)
-        }
-      };
-
-      this.$eventHub.$on('sendToServer', order => {
-        console.log("[WS] Sending data to server: ");
-        // add token for security
-        order.token = this.$api.getToken();
-        this.$options.felunWebSocket.send(JSON.stringify(order));
-      });
-
-      */
   }
 
   

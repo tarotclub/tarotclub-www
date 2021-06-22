@@ -13,33 +13,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
     <style>
       @font-face { font-family: kanzlei; src: url('./fonts/kanzlei.ttf'); }
-      svg text {
-          -webkit-user-select: none;
-            -moz-user-select: none;
-              -ms-user-select: none;
-                  user-select: none;
-      }
-      svg text::selection {
-          background: none;
-      }
+        svg text {
+            -webkit-user-select: none;
+               -moz-user-select: none;
+                -ms-user-select: none;
+                    user-select: none;
+        }
+        svg text::selection {
+            background: none;
+        }
 
-      .responsive-container {
-        height: 100%;
-        width: 100%;
-
-        display: inline-block;
-        position: relative;
-
-        vertical-align: top;
-        overflow: hidden;
-      }
-
-      .svg-content {
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
+        .board {
+          width: 10px; 
+          height: 10px;
+          border: 5px solid black;
+          text-align: center;
+          margin: auto;
+          background: radial-gradient(#40845c, #026a2d); /* vert foncé: #026a2d; */
+        }
 
     </style>
   </head>

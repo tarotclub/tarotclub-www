@@ -51,7 +51,7 @@
           <v-list-item
             v-for="item in menuItems"
             :key="item.title"
-            :to="`/dashboard/` + item.page"
+            :to="`/` + item.page"
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
@@ -68,25 +68,22 @@
     <v-main fluid>
       <router-view></router-view>   
     </v-main>
-    
-    <v-footer absolute>
+    <!--
+    <v-footer  absolute inset app>
         <v-card color="transparent" elevation="0" class="mx-auto" style="text-align:right; margin-bottom:10px; padding-top : 30px;">
           <span>TarotClub &copy; 2020-2099 - Tous droits réservés</span>
         </v-card>          
     </v-footer>
-
+-->
   </v-app>
 </template>
 
 <script>
 
-// import LeftMenu  from "./components/LeftMenu";
-import TopToolBar  from "./components/TopToolBar";
-
 export default {
   name: 'App',
   components: {
-    TopToolBar
+ 
   },
   data () {
       return {
@@ -97,8 +94,8 @@ export default {
         drawer: null,
         menuItems: [
           { text: 'Accueil', icon: 'mdi-home', page: 'home', user: true },
-          { text: 'Serveurs et tables', icon: 'mdi-cards-playing-outline', page: 'profile', user: true },
-          { text: 'Documentation', icon: 'mdi-file-document', page: 'presentation', user: true },
+          { text: 'Jouer en ligne', icon: 'mdi-cards-playing-outline', page: 'game', user: true },
+          { text: 'Documentation', icon: 'mdi-file-document', page: 'docs', user: true },
       ],
       }
     },

@@ -6,7 +6,8 @@ import ServerStore from './ServerStore.js'
 Vue.use(Vuex)
 
 const state = {
-    isinitialized: false
+    isinitialized: false,
+    isIngame: false,
 }
 
 const mutations = {

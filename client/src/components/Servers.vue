@@ -71,14 +71,7 @@
       joinServer(server) {
         console.log("[SERVERS] Connect to server: ");
         this.connection = 1;
-
-        // // Not a real URL, just using for demo purposes
-        // let es = new EventSource(this.$api.getRESTApiUri() + '/connect');
-
-        // es.addEventListener('message', event => {
-        //     let data = JSON.parse(event.data);
-        //     this.stockData = data.stockData;
-        // }, false);
+        this.$store.commit('server/SET_CURRENT_SERVER', server);
       },
     },
     //====================================================================================================================
