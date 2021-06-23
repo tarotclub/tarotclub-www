@@ -8,7 +8,7 @@
             <v-card class="mx-auto" width="360px" elevation="0">
 
                 <h1 style="padding-bottom:10px">Réinitialiser son mot de passe</h1>
-                <p>Entrez votre nom d'utilisateur votre nouveau mot de passe</p>
+                <p>Entrez votre nouveau mot de passe</p>
 
                 <!-- NEW PASSWORD FORM -->
 

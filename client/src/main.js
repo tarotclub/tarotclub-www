@@ -1,8 +1,11 @@
+// EXTENSIONS VUE
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex'
 import Vuetify from 'vuetify/lib';
+import VueCookies from 'vue-cookies';
 
+// APPLICATION
 import App from './App.vue'
 import router from './router.js'
 import store from './store/AppStore'
@@ -10,6 +13,8 @@ import Api from './Api.js'
 import TarotClient from './tarot-client.js'
 import ReconnectingWebSocket from 'reconnecting-websocket';
 
+
+Vue.use(VueCookies);
 Vue.use(Vuex);
 Vue.use(VueRouter);
 Vue.use(Vuetify);

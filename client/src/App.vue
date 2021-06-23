@@ -113,9 +113,8 @@ export default {
   methods: {
     logOut() {
       this.$store.commit("user/LOGOUT");
-      this.$store.commit("machines/CLEAR_MACHINES");
       this.$api.destroyToken();
-      this.$router.push({ name: "Signin" });
+      this.$router.push({ name: "signin" });
     },
   },
   //====================================================================================================================

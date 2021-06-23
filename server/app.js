@@ -6,11 +6,9 @@ const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
 const path = require('path');
 const schedule = require('node-schedule');
 const db = require('./sql/queries.js')
-const jwtutil = require('./routes/jwtutil.js');
 
 const port = process.env.PORT
 
@@ -30,13 +28,18 @@ db.upgradeDB();
 // ============================================================================
 let app = express();
 
-app.options('*', cors());
 app.use(cors());
 app.use(express.static(path.resolve(__dirname, '../client/dist')));
-app.use(bodyParser.json());
+app.use(express.json());
+
 
 app.use(helmet()); // adding Helmet to enhance your API's security
-app.use(morgan('combined')); // adding morgan to log HTTP requests
+app.use(morgan({
+  "format": "default",
+  "stream": {
+    write: function(str) { console.log(str); }
+  }
+})); // adding morgan to log HTTP requests
 
 // ============================================================================
 // JOB SCHEDULER
@@ -66,10 +69,10 @@ const cronJob = schedule.scheduleJob('*/30 * * * *', function(){
 // ============================================================================
 // ROUTES, ORDER OF DECLARATION IS IMPORTANT
 // ============================================================================
-app.all('*', function (req, res, next) {
-  console.log('Requested: ' + req.url);
-  next(); // pass control to the next handler
-});
+// app.all('*', function (req, res, next) {
+//   console.log('Requested: ' + req.url);
+//   next(); // pass control to the next handler
+// });
 
 
 const ApiRoot           = '/api/v1';

@@ -1,19 +1,15 @@
-
-import axios from "axios";
+import Vue from 'vue';
 
 export default class Api {
 
     constructor() {
-        this.config = {
-            baseURL: 'api/v1', //this.getRESTApiUri(),
-            timeout: 5000,
-            headers: {
-                'Accept' : 'application/json',
-                'Content-Type': 'plain/text'
-            }
-        };
+        this.baseURL = this.getRESTApiUri();
+        this.headers = {
+            'Accept' : 'application/json',
+            'Content-Type': 'application/json'
+        },
         this.tokenName = 'tarotclub-token';
-    } 
+    }
 
     /**************************************************************** 
      * API VARIOUS PATH GETTERS
@@ -46,81 +42,107 @@ export default class Api {
      * LOCAL STORAGE 
      ****************************************************************/
     loadToken() {
-        let token = localStorage.getItem(this.tokenName);
-        this.config.headers = {"Authorization" : "Bearer "  + token };
+        let token = Vue.$cookies.get(this.tokenName);//localStorage.getItem(this.tokenName);
+        this.headers["Authorization"] = "Bearer "  + token;
     }
 
     setToken(token) {
-        localStorage.setItem(this.tokenName, token);
+        // localStorage.setItem(this.tokenName, token);
+        Vue.$cookies.set(this.tokenName, token);
         this.loadToken();
     }
 
     destroyToken() {
-        localStorage.setItem(this.tokenName, '');
+        Vue.$cookies.set(this.tokenName, '');
         this.loadToken();
     }
 
     /**************************************************************** 
      * API AUTHENTIFICATION 
      ****************************************************************/
-    signup(user) {
-        return axios.post('/auth/signup', user, this.config).then(this.handleResponse);
+    async signup(user) {
+        return this.client('POST','/auth/signup', user);
     }
 
-    signin(user) {
-        return axios.post('/auth/signin', user, this.config).then(this.handleResponse);
+    async signin(user) {
+        return this.client('POST','/auth/signin', user);
     }
 
-    setNewPassword(info) {
-        return axios.post('/auth/newpassword', info, this.config).then(this.handleResponse);
+    async setNewPassword(info) {
+        return this.client('POST','/auth/newpassword', info);
     }
 
-    requestResetPassword(info) {
-        return axios.post('/auth/resetpassword', info, this.config).then(this.handleResponse);
+    async requestResetPassword(info) {
+        return this.client('POST','/auth/resetpassword', info);
     }
 
     /**************************************************************** 
      * API DU PROFIL UTILISATEUR
      ****************************************************************/
 
-    setMyProfile(user) {
-        return axios.post('/dashboard/user/profile', user, this.config).then(this.handleResponse);
+     async setMyProfile(user) {
+        return this.client('POST','/dashboard/user/profile', user);
     }
 
-    getMyProfile() {
-        return axios.get('/dashboard/user/profile', this.config).then(this.handleResponse);
+    async getMyProfile() {
+        return this.client('GET','/dashboard/user/profile');
     }
 
     /**************************************************************** 
      * GESTION DES UTILISATEURS PAR LES ADMINS 
      ****************************************************************/
-    setUserProfile(user) {
-        return axios.post('/dashboard/users/profile', user, this.config).then(this.handleResponse);
+     async setUserProfile(user) {
+        return this.client('POST','/dashboard/users/profile', user);
     }
 
-    getUsers() {
-        return axios.get('/dashboard/users/users', this.config).then(this.handleResponse);
+    async getUsers() {
+        return this.client('GET','/dashboard/users/users');
     }
 
-    deleteUser(user) {
-        return axios.post('/dashboard/users/delete', user, this.config).then(this.handleResponse);
+    async deleteUser(user) {
+        return this.client('POST','/dashboard/users/delete', user);
     }
-
-     /**************************************************************** 
-     * GESTION DES SERVEURS DE JEU
-     ****************************************************************/
-     getAllServers() {
-        return axios.get('/servers/list', this.config).then(this.handleResponse);
-     }
 
     /**************************************************************** 
-     * FONCTION UTILITAIRE 
+     * GESTION DES SERVEURS DE JEU
      ****************************************************************/
-    handleResponse(response) {
-        if (response.status === 200) {
-            return Promise.resolve(response.data)
-        } else {
-            return Promise.reject(response.statusText);
-        }
+    async getAllServers() {
+        return this.client('GET','/servers/list');
     }
+
+    /**************************************************************** 
+     * CLIENT WRAPPER FOR REST API CALLS
+     ****************************************************************/
+    client(method, endpoint, body) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+
+        const options = {
+            method: method,
+            signal: controller.signal,
+            headers: this.headers
+        }
+
+        if (body) {
+            options.body = JSON.stringify(body)
+        }
+
+        let uri =  this.baseURL + endpoint;
+        
+        const promise = fetch(uri, options)
+        .then(async response => {
+            if (response.status === 401) {
+                window.location.assign(window.location);
+                return;
+            }
+            const data = await response.json();
+            if (response.ok) {
+                return data;
+            } else {
+                return Promise.reject(new Error('Invalid response'))
+            }
+        });
+        return promise.finally(() => clearTimeout(timeout));
+    }
+
 }

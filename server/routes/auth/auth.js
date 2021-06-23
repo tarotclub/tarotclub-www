@@ -55,7 +55,7 @@ router.post('/signup', (req, res) => {
       } else {
         res.status(200).json({
             success: false,
-            message: 'username exists'
+            message: "Le nom d'utilisateur existe"
         });
       }
     }).catch(function (err) {
@@ -69,7 +69,7 @@ router.post('/signup', (req, res) => {
 
 router.post('/signin', (req, res) => {
 
-  queries.getUserByUsername(req.body.username).then( function (data) {
+  queries.getUserByUsernameOrEmail(req.body.login).then( (data) => {
 
     if (data.length > 0) {
       if (AccessUtil.isActive(data[0].status)) {
@@ -81,7 +81,8 @@ router.post('/signin', (req, res) => {
             // Create JWT
             const user = {
               id: data[0].id,
-              username: req.body.username,
+              username: data[0].username,
+              email: data[0].email,
               status: data[0].status,
             };
 
@@ -101,7 +102,7 @@ router.post('/signin', (req, res) => {
                         email: data[0].email
                       }
                   },
-                  message: 'Signed in user ' + req.body.username
+                  message: 'Signed in user ' + data[0].username
               });
             })
           } else {
@@ -149,33 +150,33 @@ router.post('/resetpassword', (req, res) => {
         message: 'username required'
       });
   } else {
-    queries.getUserByUsername(req.body.username).then( function (data) {
+    queries.getUserByEmail(req.body.username).then((data) => {
 
       if (data.length > 0) {
         if (AccessUtil.isActive(data[0].status)) {
         // create reset token for that user
         let reset_token = crypto.randomBytes(20).toString('hex');
 
-        queries.setResetToken(data[0].id, reset_token).then(function () {
-            // Ok, now send mail to user with the tocken
+        queries.setResetToken(data[0].id, reset_token).then(() => {
+            // Ok, now send mail to user with the token
 
             // console.log(req.headers.host);
 
             mailer.sendMail(
               data[0].email,
-              'Monnaie de Paris - Nouveau mot de passe',
-              'Vous recevez cet email parque que vous avez demandé une ré-initialisation de votre mot de passe.\n\n' +
+              'TarotClub - Nouveau mot de passe',
+              'Vous recevez cet email parque que vous avez demandé une ré-initialisation de votre mot de passe sur le site tarotclub.fr.\n\n' +
               'Merci de copier-coller le lien suivant dans votre navigateur pour continuer le processus :\n\n' + req.headers.host +
               '/newpassword/' + reset_token + '\n\n' +
               "Si vous n'êtes pas à l'origine de cette action, ignorez simplement cet email, votre mot de passe restera inchangé.\n"
-            ).then( function() {
+            ).then( () => {
 
               res.status(200).json({
                   success: true,
                   message: 'email sent'
               });
 
-            }).catch(function(error, info) {
+            }).catch((error, info) => {
               
               res.status(200).json({
                   success: false,
@@ -184,7 +185,7 @@ router.post('/resetpassword', (req, res) => {
 
             });
 
-        }).catch(function (err) {
+        }).catch((err) => {
           console.log("[AUTH] set reset token failure: " + err.message);
           res.status(200).json({
               success: false,
@@ -221,7 +222,7 @@ router.post('/resetpassword', (req, res) => {
 
 router.post('/newpassword', (req, res) => {
 
-  console.log("[AUTH] Token called");
+  console.log("[AUTH] Set new password called");
 
   if ((req.body.honeypot === '') && (req.body.human === true)) {
 
@@ -272,13 +273,10 @@ router.post('/newpassword', (req, res) => {
     });
 
   } else {
-    console.log("[AUTH] Bot");
+    console.log("[AUTH] Detected bot attempt");
   }
 
 
 });
-
-
-
 
 module.exports = router;

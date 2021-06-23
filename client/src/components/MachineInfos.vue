@@ -322,7 +322,7 @@ export default {
       },
       returnToHome() {
         this.$eventHub.$emit('setAlert', 'Machine inconnue', 'error', 3000);
-        this.$router.push({ name: 'Home' });
+        this.$router.push({ name: 'home' });
       }
     },
     computed: {

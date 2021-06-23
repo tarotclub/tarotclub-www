@@ -6,17 +6,16 @@
         <v-col cols="12">
             <v-card class="mx-auto" width="360px" elevation="0">
                 <h1 style="padding-bottom:10px">Réinitialisation du mot de passe</h1>
-                <p>Entrez votre nom d'utilisateur, vous recevrez un email contenant un lien de réinitialisation.</p>
+                <p>Entrez votre adresse e-mail, vous recevrez message contenant un lien de réinitialisation.</p>
                 
                 <!-- RESET PASSWORD FORM -->
-
                 <v-card elevation="0" class="mx-auto" width="300px" style="padding-bottom:10px;">
                     <form style="padding-bottom:50px;" @submit="checkForm">
                        <v-text-field
                             name="username"
                             value=""
                             type="text" 
-                            label="User name"
+                            label="Adresse e-mail"
                             v-model="username"
                             required
                         ></v-text-field>

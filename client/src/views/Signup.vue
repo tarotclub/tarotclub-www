@@ -12,7 +12,7 @@
                 <!-- SIGN UP FORM -->
 
                 <v-card elevation="0" class="mx-auto" width="300px">
-                    <v-form ref="signupForm" style="padding-bottom:30px;" @submit="checkForm" v-model="valid">
+                    <v-form ref="signupForm" style="padding-bottom:30px;" v-model="valid">
       
                         <v-text-field
                             name="username"
@@ -51,7 +51,7 @@
                             style="display:none !important; visibility:hidden !important;"
                         ></v-text-field>
 
-                        <v-btn type="submit" class="mr-4" :disabled="!valid">Valider</v-btn>
+                        <v-btn type="submit" class="mr-4" :disabled="!valid"  @click="validate">Valider</v-btn>
                         <v-btn @click="reset">Effacer</v-btn>
                     </v-form>
                     
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 
 export default {
     
@@ -75,7 +76,7 @@ export default {
         potmiel: '',
         nameRules: [
             v => !!v || 'Name is required',
-            v => v.length <= 20 || 'Name must be less than 20 characters',
+            v => v == undefined || v.length <= 20 || 'Name must be less than 20 characters',
         ],
         emailRules: [
             v => !!v || 'E-mail is required',
@@ -99,21 +100,23 @@ export default {
 
         returnToHome() {
             this.$eventHub.$emit('setAlert', 'Vous êtes déjà connecté!', 'error', 3000);
-            this.$router.push({ name: 'Home' });
+            this.$router.push({ name: 'home' });
         },
 
         reset() {
             this.$refs.signupForm.reset();
         },
-        checkForm (e) {
+        validate (e) {
             this.$api.signup( {password: this.password, username: this.username, email: this.email, potmiel: this.potmiel }).then( result => {
                 if (result.success) {
                     this.$eventHub.$emit('setAlert', 'Compte créé, en attente de validation', 'success', 3000);
                 } else {
-                    this.$eventHub.$emit('setAlert', 'Erreur lors de la création du compte', 'error', 3000);
+                    this.$eventHub.$emit('setAlert', 'Erreur lors de la création du compte: ' + result.message, 'error', 3000);
                 }
 
-                this.reset();
+                Vue.nextTick(() => {
+                    this.reset();
+                });
 
             }).catch(error => {
                 console.error(error);

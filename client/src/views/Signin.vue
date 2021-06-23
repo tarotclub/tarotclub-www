@@ -10,11 +10,11 @@
                 <v-card elevation="0" class="mx-auto" width="300px" style="padding-bottom:10px;">
                     <form ref="loginForm" style="padding-bottom:50px;" @submit="checkForm">
                         <v-text-field
-                            name="username"
+                            name="login"
                             value=""
                             type="text" 
-                            label="User name"
-                            v-model="username"
+                            label="Utilisateur ou e-mail"
+                            v-model="login"
                             required
                         ></v-text-field>
 
@@ -22,7 +22,7 @@
                             name="password"
                             style="padding-bottom:20px"
                             type="password"
-                            label="Password"
+                            label="Mot de passe"
                             v-model="password"
                             required
                         ></v-text-field>
@@ -44,7 +44,7 @@
 
 export default {
     data: () => ({
-        username: '',
+        login: '',
         password: ''
     }),
     created() {
@@ -63,19 +63,19 @@ export default {
 
     methods: {
         returnToHome() {
-            this.$router.push({ name: 'Home' });
+            this.$router.push({ name: 'home' });
         },
         reset () {
             this.password = '';
-            this.username = '';
+            this.login = '';
             this.$refs.loginForm.reset();
         },
         checkForm (e) {
-            this.$api.signin( {username: this.username, password: this.password }).then( result => {
+            this.$api.signin( {login: this.login, password: this.password }).then( result => {
                 if (result.success) {
                     this.$api.setToken(result.data.token);
                     this.$store.commit('user/LOGIN_SUCCESS', result.data.profile);
-                    this.$router.push({ name: 'Home' });
+                    this.$router.push({ name: 'home' });
      
                 } else {
 
