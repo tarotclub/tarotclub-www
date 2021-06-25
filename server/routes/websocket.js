@@ -28,7 +28,15 @@ class WebSocket {
         this._onConnect = c;
     }
 
-    webSocketWrite(data) {
+    get onClose() {
+        return this._onClose;
+    }
+
+    set onClose(c) {
+        this._onClose = c;
+    }
+
+    webSocketWrite(data, socket) {
         /* eslint-disable capitalized-comments */
 
         // Copy the data into a buffer
@@ -53,7 +61,7 @@ class WebSocket {
 
         // Write the data to the data buffer
         data.copy(buffer, 2 + lengthByteCount);
-        this.socket.write(buffer);
+        socket.write(buffer);
     }
 
     webSocketGetMessage(buffer) {
@@ -179,6 +187,9 @@ class WebSocket {
             socket.on("close", () => {
                 console.log('[WS] Closed');
                 this.clients = this.clients.filter(c => c.id !== clientId);
+                if (this._onClose) {
+                    this._onClose(this.client);
+                }
             });
 
             if (request.headers.upgrade.toLowerCase() !== "websocket") {

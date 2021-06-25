@@ -11,8 +11,6 @@ import router from './router.js'
 import store from './store/AppStore'
 import Api from './Api.js'
 import TarotClient from './tarot-client.js'
-import ReconnectingWebSocket from 'reconnecting-websocket';
-
 
 Vue.use(VueCookies);
 Vue.use(Vuex);
@@ -71,6 +69,9 @@ new Vue({
         }
     }).catch((error) => {
       console.log(error);
+      console.log("Not logged in.");
+      this.$store.commit('user/LOGIN_FAILURE');
+      this.$store.commit('SET_INITIALIZED', true);
     });
   },
   //====================================================================================================================

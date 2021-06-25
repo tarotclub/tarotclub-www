@@ -2,7 +2,21 @@ const router = require('express').Router();
 const jwtUtil = require("../jwtutil.js");
 const WebSocket = require('../websocket.js');
 
-let list = new Map(); // liste des serveurs
+let list = new Map(); // liste des serveurs: key = token, value = serveur object (ip, stats...)
+let wsClients = new Map(); // key = token, value = web socket client object { id, socket }
+
+/*
+
+{ 
+    "id":1624611819492,
+    "name":"TarotServer",
+    "nb_players":0,
+    "nb_tables":1,
+    "tcp_port":4269,
+    "ws_port":4270
+}
+
+*/
 
 // ================================================================================================
 // LINK WITH TCDS TAROTCLUB SERVER EXECUTABLES
@@ -17,20 +31,30 @@ wss.start("127.0.0.1", 8989, (cmd, client) => {
         let json = JSON.parse(cmd);
 
         if (list.has(json.token)) {
-            updateServerStatus(token, server);
+            updateServerStatus(json.token, json.server);
         } else {
-            registerNewServer(json.token, json.server);
+            if (registerNewServer(json.token, json.server)) {
+                // Accepté, on associe le client websocket à ce serveur
+                wsClients.set(json.token, client);
+                sendToGameServer(list.get(json.token).id, {
+                    cmd: 'register',
+                    success: true
+                });
+            }
         }
 
     } catch (error) {
-        
+        console.error(error);
     }
-    
-    //wss.webSocketWrite(JSON.stringify({success: true}));
 });
 
 wss.onConnect = (newClient) => {
     console.log("Connected client ID: " + newClient.id);
+};
+
+wss.onClose = (client) => {
+    console.log("Closed client ID: " + client.id);
+    wsClients = wsClients.filter(c => c.id !== client.id);
 };
 
 function registerNewServer (token, server)
@@ -48,6 +72,7 @@ function registerNewServer (token, server)
 
     if (allowedServer) {
         // server object contains only public information, keep token and ssk private!
+        server.id = Date.now();
         list.set(token, server);
         console.log("[SERVERS] Added new server: " + JSON.stringify(server));
 
@@ -62,7 +87,7 @@ function updateServerStatus(token, server)
     let allowedServer = false;
 
     console.log("[TCDS] Received status from server");
-    if (req.body.token == process.env.TCDS_OFFICIAL_TOKEN1) {
+    if (token == process.env.TCDS_OFFICIAL_TOKEN1) {
         allowedServer = true;
     } else {
         // Serveur non officiel
@@ -73,6 +98,22 @@ function updateServerStatus(token, server)
     if (allowedServer) {
         list.set(token, server);
     }
+}
+
+function sendToGameServer(id, messageObj) {
+    let orderSent = false;
+    list.forEach( (value, key, map) => {
+        if (value.id == id) {
+            if (wsClients.has(key)) {
+                let c = wsClients.get(key);
+                if (c != undefined) {
+                    wss.webSocketWrite(JSON.stringify(messageObj), c.socket);
+                    orderSent = true;
+                }
+            }
+        }
+    });
+    return orderSent;
 }
 
 // ================================================================================================
@@ -97,6 +138,35 @@ router.get('/list', (req, res) => {
 router.post('/join', jwtUtil.checkTokenAllUsers, (req, res, next) => {
     console.log("[SERVERS] Join request to: " + JSON.stringify(req.body.server));
 
+    // On génère une clé de jeu partagée entre le client et le serveur
+    let gek = jwtUtil.genRandomString(16);
+    let passPhrase = jwtUtil.genRandomString(32);
+    let playerId = Date.now();
+    // on génère un id pour ce joueur histoire de tracer sa demande de connexion
+    // Il permet au serveur d'asscocié ce joueur et sa clé GEK
+
+    if (sendToGameServer(req.body.server.id, 
+        {
+            cmd: 'join',
+            playerId: playerId, 
+            gek: gek,
+            passPhrase: passPhrase 
+        })) {
+        res.status(200).json({
+            success: true,
+            data: {
+                gek: gek,
+                passPhrase: passPhrase
+            },
+            message: 'Join request success'
+        });
+    } else {
+        res.status(200).json({
+            success: false,
+            data: {},
+            message: 'Cannot communicate with game server'
+        });
+    }
 });
 
 
@@ -109,25 +179,17 @@ router.get('/events', (req, res, next) => {
         'Transfer-Encoding': 'identity',
         'X-Accel-Buffering': 'no',
         "Access-Control-Allow-Origin": '*'
-      });
+    });
 
-/*
-res.writeHead(200, {
-    'Content-Type': 'text/event-stream; charset=utf-8',
-    'Transfer-Encoding': 'identity',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-  })
-*/
-      res.socket.setKeepAlive(true);
-      res.socket.setNoDelay(true);
-      res.socket.setTimeout(0);
+    res.socket.setKeepAlive(true);
+    res.socket.setNoDelay(true);
+    res.socket.setTimeout(0);
 
       //=> Flush headers immediately
     // This has the advantage to 'test' the connection: if the client can't access this resource because of
     // CORS restrictions, the connection will fail instantly.
-      res.flushHeaders();
-      res.write(':ok\n\n')
+    res.flushHeaders();
+    res.write(':ok\n\n')
 
     // After client opens connection send all nests as string  
 

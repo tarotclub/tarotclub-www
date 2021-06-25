@@ -1,7 +1,8 @@
 
 <template>
 <div>
-  <v-card v-show="connection == 0">
+
+   <v-card v-show="connection == 0">
     <v-card-title>
       Liste des serveurs
       <v-spacer></v-spacer>
@@ -21,7 +22,8 @@
     >
     
     <template v-slot:[`item.join`]="{ item }">
-      <v-icon medium class="mr-2" @click="joinServer(item)" >mdi-play-network</v-icon>
+      <v-icon v-if="isLogged" medium class="mr-2" @click="joinServer(item)" >mdi-play-network</v-icon>
+      <pre v-else>Non connecté!</pre>
     </template>
     
     </v-data-table>
@@ -69,16 +71,23 @@
         // app state has finished loading.
         return this.$store.state.server.connection;
       },
+      isLogged() {
+        return this.$store.getters["user/isLogged"];
+      },
     },
     //====================================================================================================================
     methods: {
       joinServer(server) {
         console.log("[SERVERS] Connect to server: ");
-        this.connection = 1;
         this.$store.commit('server/SET_CURRENT_SERVER', server);
         this.$api.joinServer(server).then( (result) => {
+            console.log("[SERVERS] Received server credentials: " + JSON.parse(result));
+            this.$tc.connectToServer();
+
 
         }).catch( (e) => {
+            console.error("[SERVERS] Failure to join server");
+            this.$eventHub.$emit('setAlert', 'Erreur: impossible de joindre le serveur', 'error', 3000);
 
         });
       },

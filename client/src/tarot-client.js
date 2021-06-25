@@ -11,7 +11,7 @@ export default class TarotClient {
     constructor() {
         this.player = {
             uuid: INVALID_UID,
-            nickname: 'PlayerUnkown',
+            nickname: 'PlayerUnknown',
             avatar: '',
             gender: 'Human'
           };   
@@ -104,7 +104,6 @@ export default class TarotClient {
                     console.error(error);
                 }
             }
-
         }
         
         return message;
@@ -120,7 +119,6 @@ export default class TarotClient {
         } catch (error) {
             console.log('[TarotClient] ' + error);
         }
-        
     }
 
     getRootUrl()

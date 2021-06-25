@@ -3,7 +3,7 @@ const queries = require('../../sql/queries.js');
 
 router.post('/profile', (req, res) => {
 
-    queries.getUserByUsername(req.jwtDecoded.user.username
+    queries.getUserByUsername(req.jwt.user.username
         ).then(function (data) {
         if (data.length > 0) {
 
@@ -13,7 +13,7 @@ router.post('/profile', (req, res) => {
                 req.body.company,
                 req.body.email,
                 req.body.tel,
-                req.jwtDecoded.user.username
+                req.jwt.user.username
             ).then(function() {
                 res.status(200).json({
                     success: true,
@@ -45,7 +45,7 @@ router.post('/profile', (req, res) => {
 
 router.get('/profile', (req, res) => {
 
-    queries.getUserByUsername(req.jwtDecoded.user.username
+    queries.getUserByUsername(req.jwt.user.username
     ).then(function (data) {
 
         if (data.length > 0) {
