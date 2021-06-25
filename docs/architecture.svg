@@ -17,6 +17,12 @@
   <defs
      id="defs2">
     <rect
+       x="-127.41055"
+       y="75.808646"
+       width="161.59919"
+       height="25.752861"
+       id="rect1136" />
+    <rect
        x="-87.484306"
        y="195.22491"
        width="315.54868"
@@ -440,16 +446,16 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.53430692"
      inkscape:cx="990.31747"
-     inkscape:cy="267.65743"
+     inkscape:cy="417.38411"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
-     inkscape:window-width="1884"
-     inkscape:window-height="1323"
-     inkscape:window-x="1859"
-     inkscape:window-y="110"
-     inkscape:window-maximized="0"
+     inkscape:window-width="1920"
+     inkscape:window-height="1065"
+     inkscape:window-x="3840"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -462,7 +468,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -503,7 +509,7 @@
        y="0"
        x="46.340691"
        transform="translate(150.30549,-68.758729)"
-       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect839-3);fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect839-3);fill:#000000;fill-opacity:1;stroke:none;"
        id="text837-1"
        xml:space="preserve"><tspan
          x="-4.8971456"
@@ -551,15 +557,7 @@
 </tspan></tspan><tspan
          x="168.84961"
          y="78.741184"><tspan
-           style="shape-inside:url(#rect1098)">(https REST)</tspan></tspan></text>
-    <text
-       transform="translate(66.932355,-47.934941)"
-       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1428);fill:#000000;fill-opacity:1;stroke:none;"
-       id="text1426"
-       xml:space="preserve"><tspan
-         x="168.84961"
-         y="69.921733"><tspan
-           style="shape-inside:url(#rect1098)">reply SSK</tspan></tspan></text>
+           style="shape-inside:url(#rect1098)">https REST (TLS)</tspan></tspan></text>
     <text
        transform="matrix(1.5960875,0,0,1.5960875,-241.9939,-119.87107)"
        style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1734);fill:#000000;fill-opacity:1;stroke:none;"
@@ -583,7 +581,7 @@
     <text
        xml:space="preserve"
        id="text1590"
-       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect1592);fill:#000000;fill-opacity:1;stroke:none"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect1592);fill:#000000;fill-opacity:1;stroke:none;"
        transform="translate(-41.566233,-23.896012)"
        x="51.193096"
        y="0"><tspan
@@ -727,5 +725,15 @@
            r="8.5619068" />
       </g>
     </g>
+    <text
+       xml:space="preserve"
+       id="text1134"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect1136);fill:#ff0000;fill-opacity:1;stroke:none;"><tspan
+         x="-127.41016"
+         y="85.341548"><tspan
+           style="fill:#ff0000">La clé GEK est différente pour </tspan></tspan><tspan
+         x="-127.41016"
+         y="98.570674"><tspan
+           style="fill:#ff0000">chaque joueur</tspan></tspan></text>
   </g>
 </svg>

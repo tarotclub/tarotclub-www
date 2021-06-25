@@ -79,7 +79,6 @@ export default class Api {
     /**************************************************************** 
      * API DU PROFIL UTILISATEUR
      ****************************************************************/
-
      async setMyProfile(user) {
         return this.client('POST','/dashboard/user/profile', user);
     }
@@ -89,25 +88,14 @@ export default class Api {
     }
 
     /**************************************************************** 
-     * GESTION DES UTILISATEURS PAR LES ADMINS 
-     ****************************************************************/
-     async setUserProfile(user) {
-        return this.client('POST','/dashboard/users/profile', user);
-    }
-
-    async getUsers() {
-        return this.client('GET','/dashboard/users/users');
-    }
-
-    async deleteUser(user) {
-        return this.client('POST','/dashboard/users/delete', user);
-    }
-
-    /**************************************************************** 
-     * GESTION DES SERVEURS DE JEU
+     * DIALOGUE AVEC DES SERVEURS DE JEU 
      ****************************************************************/
     async getAllServers() {
         return this.client('GET','/servers/list');
+    }
+
+    async joinServer(server) {
+        return this.client('POST','/servers/join', {server: server});
     }
 
     /**************************************************************** 

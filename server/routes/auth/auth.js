@@ -5,11 +5,11 @@ const jwt = require('jsonwebtoken');
 const queries = require('../../sql/queries.js');
 const mailer = require('../../mailer/mailer.js');
 const AccessUtil = require("../accessutil.js");
-const JwtUtil = require("../jwtutil.js");
+const jwtUtil = require("../jwtutil.js");
 
 function saltPassword(password)
 {
-  let salt = JwtUtil.genRandomString(16);
+  let salt = jwtUtil.genRandomString(16);
   const key1 = crypto.scryptSync(password, salt, 20);
   const key2 = key1.toString('hex');
 

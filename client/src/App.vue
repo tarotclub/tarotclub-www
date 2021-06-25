@@ -96,7 +96,8 @@ export default {
           { text: 'Accueil', icon: 'mdi-home', page: 'home', user: true },
           { text: 'Jouer en ligne', icon: 'mdi-cards-playing-outline', page: 'game', user: true },
           { text: 'Documentation', icon: 'mdi-file-document', page: 'docs', user: true },
-      ],
+        ],
+        evtSource: null
       }
     },
   computed: {
@@ -115,10 +116,10 @@ export default {
       this.$store.commit("user/LOGOUT");
       this.$api.destroyToken();
       this.$router.push({ name: "signin" });
-    },
+    }
   },
   //====================================================================================================================
- created() {
+  created() {
      this.$eventHub.$on('setAlert', (text, type, timeout) => {
         this.alertText = text;
         this.alertType = type;
@@ -126,11 +127,28 @@ export default {
         this.alertEnable = true;
     });
 
- },
- //====================================================================================================================
+  },
+  //====================================================================================================================
   beforeDestroy() {
     this.$eventHub.$off('setAlert');
+  },
+  //====================================================================================================================
+  mounted() {
+    this.evtSource = new EventSource(this.$api.getRESTApiUri() + '/servers/events');
+
+    this.evtSource.onerror = function(err) {
+      console.error("EventSource failed:", err);
+    }
+
+    this.evtSource.addEventListener('servers', (event) => {
+      this.$store.commit('server/SET_SERVERS', JSON.parse(event.data));
+    });
+
+    this.evtSource.onopen = function() {
+      console.log("EventSource open");
+    }
   }
+  
 };
 </script>
 

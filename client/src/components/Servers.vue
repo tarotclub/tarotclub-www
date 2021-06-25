@@ -20,7 +20,7 @@
       :search="search"
     >
     
-    <template v-slot:item.join="{ item }">
+    <template v-slot:[`item.join`]="{ item }">
       <v-icon medium class="mr-2" @click="joinServer(item)" >mdi-play-network</v-icon>
     </template>
     
@@ -31,6 +31,10 @@
     <v-card-title>
       Connexion au serveur ...
       <v-spacer></v-spacer>
+      <v-progress-circular
+      indeterminate
+      color="primary"
+    ></v-progress-circular>
     </v-card-title>
   </v-card>
 
@@ -72,10 +76,16 @@
         console.log("[SERVERS] Connect to server: ");
         this.connection = 1;
         this.$store.commit('server/SET_CURRENT_SERVER', server);
+        this.$api.joinServer(server).then( (result) => {
+
+        }).catch( (e) => {
+
+        });
       },
     },
     //====================================================================================================================
     mounted() {
+      /*
       this.$api.getAllServers().then( result => {
           if (result.success) {
             console.log(result.data);
@@ -88,6 +98,7 @@
       }).catch(error => {
           console.error(error);
       });
+      */
     }
   }
 </script>

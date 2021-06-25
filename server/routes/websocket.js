@@ -16,8 +16,16 @@ const webSocketCloseBuffer = Buffer.from([
 ]);
 
 class WebSocket {
-    constructor(title, author) {
+    constructor() {
         this.clients = [];
+    }
+
+    get onConnect() {
+        return this._onConnect;
+    }
+
+    set onConnect(c) {
+        this._onConnect = c;
     }
 
     webSocketWrite(data) {
@@ -195,12 +203,16 @@ class WebSocket {
                 );
                 console.log("[WS] established");
 
-                const newClient = {
+                this.client = {
                     id: clientId,
                     socket: socket
                 };
 
-                this.clients.push(newClient);
+                this.clients.push(this.client);
+
+                if (this._onConnect) {
+                    this._onConnect(this.client);
+                }
 
             } else {
                 socket.end("HTTP/1.1 400 Bad Request");
@@ -223,7 +235,8 @@ class WebSocket {
                     const wsMessage = this.webSocketGetMessage(buffer);
                     if (wsMessage && wsMessage[1]) {
                         if (wsMessage[0]) {
-                            handleCommands(wsMessage[0]);
+                            handleCommands(wsMessage[0], this.client);
+                            return;
                         }
                     } else if (wsMessage === null) {
                         if (this.socket && !socket.isDestroyed) {
