@@ -1,5 +1,4 @@
 
-const router = require('express').Router();
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const queries = require('../../sql/queries.js');
@@ -16,8 +15,8 @@ function saltPassword(password)
   return salt + key2;
 }
 
-router.post('/signup', (req, res) => {
-
+function signUp(req, reply)
+{
     console.log("[AUTH] Signup called");
 
     queries.getUserByUsernameOrEmail(req.body.username, req.body.email).then( function (data) {
@@ -37,7 +36,7 @@ router.post('/signup', (req, res) => {
             
             jwt.sign ({user: user}, process.env.JWT_SECRET, (err, token) => {
               console.log("[AUTH] Signup success");
-                  res.status(200).json({
+                  reply.code(200).send({
                     success: true,
                     message: 'Created one user'
                 });
@@ -45,7 +44,7 @@ router.post('/signup', (req, res) => {
           })
           .catch(function (err) {
               console.log("[AUTH] Signup failure: " + err.message);
-              res.status(200).json({
+              reply.code(200).send({
                   success: false,
                   message: err.message
               });
@@ -53,22 +52,22 @@ router.post('/signup', (req, res) => {
 
       // -------------   here, username exists
       } else {
-        res.status(200).json({
+        reply.code(200).send({
             success: false,
             message: "Le nom d'utilisateur existe"
         });
       }
     }).catch(function (err) {
       console.log("[AUTH] Get username failure: " + err.message);
-      res.status(200).json({
+      reply.code(200).send({
           success: false,
           message: err.message
       });
     });
-});
+}
 
-router.post('/signin', (req, res) => {
-
+function signIn(req, reply)
+{
   queries.getUserByUsernameOrEmail(req.body.login).then( (data) => {
 
     if (data.length > 0) {
@@ -88,7 +87,7 @@ router.post('/signin', (req, res) => {
 
             jwt.sign ({user: user}, process.env.JWT_SECRET, (err, token) => {
               console.log("[AUTH] Signin success");
-              res.status(200).json({
+              reply.code(200).send({
                   success: true,
                   data: {
                       token: token,
@@ -107,7 +106,7 @@ router.post('/signin', (req, res) => {
             })
           } else {
             console.log("[AUTH] Signin failure");
-            res.status(200).json({
+            reply.code(200).send({
                 success: false,
                 reason: 'credentials',
                 message: 'Bad username or password'
@@ -115,7 +114,7 @@ router.post('/signin', (req, res) => {
           }
       } else {
         console.log("[AUTH] Signin failure");
-        res.status(200).json({
+        reply.code(200).send({
             success: false,
             reason: 'deleted',
             message: 'Bad username or password'
@@ -124,7 +123,7 @@ router.post('/signin', (req, res) => {
         
     } else {
       console.log("[AUTH] Signin failure");
-      res.status(200).json({
+      reply.code(200).send({
           success: false,
           reason: 'unknown',
           message: 'Bad username or password'
@@ -134,18 +133,18 @@ router.post('/signin', (req, res) => {
 
   }).catch(function (err) {
     console.log("[AUTH] Signin failure: " + err.message);
-    res.status(200).json({
+    reply.code(200).send({
         success: false,
         message: err.message
     });
   });
 
-});
+}
 
-router.post('/resetpassword', (req, res) => {
-
+function resetPassword (req, reply)
+{
   if (!req.body.username) {
-      res.status(200).json({
+      reply.code(200).send({
         success: false,
         message: 'username required'
       });
@@ -171,14 +170,14 @@ router.post('/resetpassword', (req, res) => {
               "Si vous n'êtes pas à l'origine de cette action, ignorez simplement cet email, votre mot de passe restera inchangé.\n"
             ).then( () => {
 
-              res.status(200).json({
+              reply.code(200).send({
                   success: true,
                   message: 'email sent'
               });
 
             }).catch((error, info) => {
               
-              res.status(200).json({
+              reply.code(200).send({
                   success: false,
                   message: error
               });
@@ -187,21 +186,21 @@ router.post('/resetpassword', (req, res) => {
 
         }).catch((err) => {
           console.log("[AUTH] set reset token failure: " + err.message);
-          res.status(200).json({
+          reply.code(200).send({
               success: false,
               message: err.message
           });
         });
 
       } else {
-        res.status(200).json({
+        reply.code(200).send({
             success: false,
             message: 'Account not validated'
         });
       }
         
     } else {
-      res.status(200).json({
+      reply.code(200).send({
           success: false,
           message: 'Unknown mail address'
       });
@@ -210,7 +209,7 @@ router.post('/resetpassword', (req, res) => {
 
     }).catch(function (err) {
       console.log("[AUTH] get email failure: " + err.message);
-      res.status(200).json({
+      reply.code(200).send({
           success: false,
           message: err.message
       });
@@ -218,10 +217,10 @@ router.post('/resetpassword', (req, res) => {
     
   }
 
-});
+}
 
-router.post('/newpassword', (req, res) => {
-
+function setNewPassword (req, reply)
+{
   console.log("[AUTH] Set new password called");
 
   if ((req.body.honeypot === '') && (req.body.human === true)) {
@@ -236,28 +235,28 @@ router.post('/newpassword', (req, res) => {
 
             queries.setNewPassword(data[0].id, saltPassword(req.body.password)).then(function () {
                 
-              res.status(200).json({
+              reply.code(200).send({
                   success: true,
                   message: 'Password changed'
               });
 
           }).catch(function (err) {
             console.log("[AUTH] set reset token failure: " + err.message);
-            res.status(200).json({
+            reply.code(200).send({
                 success: false,
                 message: err.message
             });
           });
 
         } else {
-          res.status(200).json({
+          reply.code(200).send({
               success: false,
               message: 'Account not validated or timeout'
           });
         }
           
       } else {
-        res.status(200).json({
+        reply.code(200).send({
             success: false,
             message: 'Unknown mail address'
         });
@@ -266,7 +265,7 @@ router.post('/newpassword', (req, res) => {
 
     }).catch(function (err) {
       console.log("[AUTH] get email failure: " + err.message);
-      res.status(200).json({
+      reply.code(200).send({
           success: false,
           message: err.message
       });
@@ -275,8 +274,14 @@ router.post('/newpassword', (req, res) => {
   } else {
     console.log("[AUTH] Detected bot attempt");
   }
+}
 
 
-});
+module.exports = async function (fastify) {
 
-module.exports = router;
+  fastify.post('/newpassword', setNewPassword);
+  fastify.post('/resetpassword', resetPassword);
+  fastify.post('/signin', signIn);
+  fastify.post('/signup', signUp);
+}
+

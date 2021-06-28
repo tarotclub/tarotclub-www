@@ -81,7 +81,7 @@
         console.log("[SERVERS] Connect to server: ");
         this.$store.commit('server/SET_CURRENT_SERVER', server);
         this.$api.joinServer(server).then( (result) => {
-            console.log("[SERVERS] Received server credentials: " + JSON.parse(result));
+            console.log("[SERVERS] Received server credentials: " + JSON.stringify(result));
             this.$tc.connectToServer();
 
 

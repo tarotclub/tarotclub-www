@@ -95,20 +95,32 @@ export default class Api {
     }
 
     async joinServer(server) {
-        return this.client('POST','/servers/join', {server: server});
+       return this.client('POST','/servers/join', {server: server});
     }
 
     /**************************************************************** 
      * CLIENT WRAPPER FOR REST API CALLS
      ****************************************************************/
-    client(method, endpoint, body) {
+     async fetchWithTimeout(resource, options) {
+        
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 10000);
+        const id = setTimeout(() => controller.abort(), options.timeout);
+      
+        const response = await fetch(resource, {
+          ...options,
+          signal: controller.signal  
+        });
+        clearTimeout(id);
+      
+        return response;
+      }
 
+
+    async client(method, endpoint, body) {
         const options = {
             method: method,
-            signal: controller.signal,
-            headers: this.headers
+            headers: this.headers,
+            timeout: 8000
         }
 
         if (body) {
@@ -116,21 +128,24 @@ export default class Api {
         }
 
         let uri =  this.baseURL + endpoint;
-        
-        const promise = fetch(uri, options)
-        .then(async response => {
-            if (response.status === 401) {
-                window.location.assign(window.location);
-                return;
-            }
-            const data = await response.json();
+
+        try {
+            const response = await this.fetchWithTimeout(uri, options);
             if (response.ok) {
-                return data;
+                console.log(await response.clone().text());
+                const resJeson = await response.json();
+                return resJeson;
             } else {
                 return Promise.reject(new Error('Invalid response'))
             }
-        });
-        return promise.finally(() => clearTimeout(timeout));
+        } catch (error) {
+            // Timeouts if the request takes
+            // longer than 6 seconds
+            console.log(error);
+            return Promise.reject(new Error('Invalid response'))
+
+        }
+
     }
 
 }
